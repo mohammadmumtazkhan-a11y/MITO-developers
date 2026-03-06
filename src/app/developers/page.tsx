@@ -167,7 +167,7 @@ export default function DevelopersLandingPage() {
                             </Button>
                         </Link>
                         <Link href="/developers/support">
-                            <Button size="lg" variant="outline" className="rounded-full px-8 border-primary-foreground/30 hover:bg-primary-foreground/10 text-primary-foreground">
+                            <Button size="lg" variant="outline" className="rounded-full bg-transparent px-8 border-primary-foreground/30 hover:bg-primary-foreground/10 hover:text-primary-foreground text-primary-foreground">
                                 <PhoneCall className="mr-2 w-4 h-4" />
                                 Contact Integration Team
                             </Button>
