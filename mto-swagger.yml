@@ -1,0 +1,1269 @@
+openapi: 3.0.1
+servers:
+  - description: FunTech Unified Remittance Platform
+    url: https://furp-02-uat.funtechcom.com/api/v1
+info:
+  title: Furp
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: v1
+tags:
+
+  - name: MTO FTP Gateway Interface
+    description: |
+      
+      ## Scope
+
+      This document describes the FTP methods and general flow of all transactions for the FURP MTO FTP Business Gateway interface. This is only to be used by FGC MTO partners that use FURP for remittance.
+
+      ## Audience
+
+      This document is aimed at developers and analysts, as it provides necessary technical details on the FTP and only provides a high-level explanation of the business processes.
+
+      ## FTP Model
+
+      The FURP FTP Model allows FURP and partner systems to exchange transaction data using a secure FTP protocol. The partner will provide us with the details (Host address, username, and password) of secure FTP that will be used for the data exchange.
+
+      The FTP must ensure there are 3 folders available for the connection as thus:
+      - **Inbound**: Data sent from partner to FURP will be stored in a folder called “Inbound”. This is expected to contain transaction files only.
+      - **Upload**: Document uploads sent from partner to FURP will be stored in a folder called “Upload”. This is expected to contain document reference CSV and physical files only e.g. compliance documents.
+      - **Outbound**: Data sent from FURP to Partner will be stored in a folder called “Outbound”. This is expected to contain transaction updates, Service Provider Static Data, and Rates.
+
+      ## File Rules
+
+      - .csv files only
+      - No header row
+      - Columns must be pipe delimited `|`
+      - No more than 200 rows in a single file
+      - Each file must have a unique name and follow the appropriate column and naming definitions
+      - Amounts are represented in decimals e.g. 100.00 and 100 will mean 100.
+      - All decimals are in 2 decimal places.
+      - Empty columns must still have the space but be left empty.
+
+      ## Associated Documentation
+        No associated documents at this time.
+
+      ## FTP Files Overview
+
+      The FURP FTP supports the following files:
+
+      | Name                    | Description                                                           | Location | Flow              |
+      |-------------------------|-----------------------------------------------------------------------|----------|-------------------|
+      | Transaction File        | Contains list of transactions to be processed                        | Inbound  | Partner to FURP   |
+      | Document Reference      | Contains a list of documents to be associated with a transaction      | Upload  | Partner to FURP   |
+      | Transaction Updates     | Contains list of status updates of transactions                       | Outbound | FURP to Partner   |
+      | Static Service Provider Data | Contains list of banks, billers, and mobile networks supported   | Outbound | FURP to Partner   |
+      | Rate Updates            | Contains rate information                                              | Outbound | FURP to Partner   |
+      | Static SourceOfFunds code  | Contains SourceOfFunds code and Name information                  | Outbound | FURP to Partner   |
+      | Static Occupations code | Contains Occupations code and Name information                  | Outbound | FURP to Partner   |
+      | Static Relationships code | Contains Relationships code and Name information                    | Outbound | FURP to Partner   |
+      | Static Employment Status  code | Contains Employment Status  code and Name information                    | Outbound | FURP to Partner   |
+      | Static Static Id Types code | Contains Static Id Types code and Name information                    | Outbound | FURP to Partner   |
+
+
+      ## FTP Process for Transaction File
+
+      **Description**: This file allows partners to send transactions to FURP for processing.  
+      **Polling Period**: 15 Mins  
+      **File Naming**: e.g. `FURPACCOUNTNOddMMyyyyHHmmss.csv`  
+      **Location**: Inbound
+
+      ### Column Details
+
+      | Order | Name                                 | Comment                                                             | Type                       | Mandatory                                                   |
+      |-------|--------------------------------------|---------------------------------------------------------------------|----------------------------|-------------------------------------------------------------|
+      | 0     | FurpAccountNo                        | FURP account number to be provided to partner.                      | string                     | Yes                                                         |
+      | 1     | TransactionCreationDate              | Date transaction created on partner system                          | Date in Format: yyyy-MM-dd (ISO-8601)  | Yes                                                         |
+      | 2     | TransactionCreationTime              | Time transaction created on partner system                          | Time in format HH:mm:ss    | Yes                                                         |
+      | 3     | MTN                                  | Money transfer number                                               | string                     | Yes                                                         |
+      | 4     | Rate                                 | Exchange Rate                                                       | Decimal                    | Yes                                                         |
+      | 5     | SettlementCurrency                   | Sending Currency ISO3                                               | String e.g. USD            | Yes                                                         |
+      | 6     | SettlementAmount                     | Amount sending                                                      | Decimal                    | Yes                                                         |
+      | 7     | PayoutCurrency                       | Receive Currency ISO3                                               | String e.g. NGN            | Yes                                                         |
+      | 8     | PayoutPrincipal                      | Amount to receive                                                   | Decimal                    | Yes                                                         |
+      | 9    | Commission                           | Commission to FURP                                                  | Decimal 0 if no commission | Yes                                                         |
+      | 10    | TotalSale                            | Total amount Settlement Amount + Commission                         | Decimal                    | Yes                                                         |
+      | 11    | TransactionType                      | Type of transaction: use codes in appendix A                        | String                     | Yes                                                         |
+      | 12    | CollectionMode                       | Collection mode: use codes in appendix A                            | String                     | Yes for Money transfer only.                                |
+      | 13    | SendingCountry                       | Sending Country ISO 3                                               | String e.g. FRA            | Yes                                                         |
+      | 14    | BeneficiaryCountry                   | The beneficiary’s ISO3                                              | String e.g. NGA            | Yes                                                         |
+      | 15    | PurposeCode                          | The purpose of the transaction: furp purpose codes                  | String                     | Yes                                                         |
+      | 16    | OtherPurpose                         | Additional notes for remittance purpose.                            | String                     | yes if PurposeCode is (Others)                              |
+      | 17    | SourceOfFund                         | The Source of the funds transaction: use furp codes                 | String                     | Yes                                                         |
+      | 18    | OtherSourceOfFund | Provides a textual description explaining the source of funds in detail.               | String                     | yes if SourceOfFund is Others                               |
+      | 19    | BeneficiaryPartnerUid                | Unique identifier of beneficiary on partner’s system                | String                     | Yes                                                         |
+      | 20    | BeneficiaryFirstName                 | Beneficiary’s first name                                            | String                     | Yes                                                         |
+      | 21    | BeneficiaryLastName                  | Beneficiary’s last name                                             | String                     | Yes                                                         |
+      | 22    | BeneficiaryPhoneNumber               | Beneficiary’s contact number                                        | String                     | Yes                                                         |
+      | 23    | BeneficiaryEmailAddress              | The beneficiary’s email address                                     | String                     | No                                                          |
+      | 24    | BeneficiaryGender                    | The beneficiary’s Gender                                            | String                     | No                                                          |
+      | 25    | BeneficiaryDob                       | The beneficiary’s date of birth                                     | Date in Format: yyyy-MM-dd (ISO-8601)  | No                                                          |
+      | 26    | BeneficiaryNationalityISO            | The beneficiary’s nationality Country ISO e.g. FRA                  | String                     | Yes                                                         |
+      | 27    | BeneficiaryAddress1                  | The beneficiary address line1 (street, house, apartment etc.)       | String                     | No                                                          |
+      | 28    | BeneficiaryAddress2                  | Address line 2. Additional details.                                 | String                     | yes if sending country is GB (United Kingdom)               |
+      | 29    | BeneficiaryDistrict                  | District name.                                                      | String                     | yes if receiving country and nationality  is BD (Bangladesh)|
+      | 30    | BeneficiaryCity                      | City name.                                                          | String                     | yes if receiving country and nationality  is BD (Bangladesh)|
+      | 31    | BeneficiaryPostCode                  | The beneficiary PostCode                                            | String                     | yes if sending country is GB (United Kingdom).              |
+      | 32    | BeneficiaryIDDocumentCountryCodeISO  | The beneficiary’s ID Issue Country ISO e.g. FRA                     | String                     | No                                                          |
+      | 33    | BeneficiaryIDDocumentIssueDate     | The beneficiary’s ID issue date                                     | Date in Format: yyyy-MM-dd (ISO-8601) | No                                                          |
+      | 34    | BeneficiaryIDDocumentExpirationDate  | The beneficiary’s ID expire date                                    | Date in Format: yyyy-MM-dd (ISO-8601) | No                                                          |
+      | 35    | BeneficiaryIDDocumentNumber          | The beneficiary’s ID Number                                         | String                     | No                                                          |
+      | 36    | BeneficiaryIDDocumentTypeCode        | The beneficiary’s ID Type code:code: use furp codes                | String                     | No                                                          |
+      | 37    | SenderPartnerUId                     | Unique identifier of sender on partner’s system                     | String                     | Yes                                                         |
+      | 38    | SenderFirstName                      | Sender’s first name                                                 | String                     | Yes                                                         |
+      | 39    | SenderLastName                       | Sender’s last name                                                  | String                     | Yes                                                         |
+      | 40    | SenderPhoneNumber                    | Sender’s Phone Number                                               | String                     | Yes                                                         |
+      | 41    | SenderGender                         | Sender’s Gender                                                     | String                     | No                                                          |
+      | 42    | SenderNationalityISO                 | The sender’s nationality Country ISO e.g. FRA                       | String                     | Yes                                                         |
+      | 43    | SenderEmailAddress                   | The sender’s email address                                          | String                     | No                                                          |
+      | 44    | SenderDob                            | The sender’s Date of birth                                          | Date in Format: yyyy-MM-dd (ISO-8601) | Yes                                                         |
+      | 45    | SenderBirthCountryISO                | The sender’s country of birth ISO e.g. FRA                          | String                     | Yes                                                         |
+      | 46    | RelationshipCode                     | The beneficiary’s relationship with sender: use furp codes          | String                     | Yes                                                         |
+      | 47    | otherRelation                        | The beneficiary’s relationship  remarks                             | String                     | yes if relationship code is Others                          |
+      | 48    | SenderOccupationCode                 | The sender’s occupation code: use furp codes                        | String                     | yes                                                         |
+      | 49    | SenderEmployerName                   | The Sender's Employment  Name                                       | String                     | No                                                         |
+      | 50    | SenderEmploymentStatusCode             | The Sender's Employment  status code: use furp codes                   | String                     | yes                                                         |
+      | 51    | SenderAddressLine1                   | The sender’s address line 1 (street, house, apartment etc.)         | String                     | yes                                                         |
+      | 52    | SenderAddressLine2                   | The sender’s address line 2                                         | String                     | yes if sending country is GB (United Kingdom)               |
+      | 53    | SenderDistrict                       | The sender’s District  Name                                         | String                     | yes if receiving country and nationality  is BD (Bangladesh)|
+      | 54    | SenderAddressCity                    | The sender’s City name                                              | String                     |City name. Conditional rules: Mandatory if receiving country is BD AND nationality is BD (Bangladesh).|
+      | 55    | SenderAddressPostcode                | The sender’s address post / zip code                                | String                     | yes if sending country is GB (United Kingdom)               |
+      | 56    | SenderIDDocumentCountryCodeISO       | The Sender’s ID Issue Country ISO e.g. FRA                          | String                     | yes                                                          |
+      | 57    | SenderIDDocumentIssueDate          | The Sender’s ID issue date                                          | Date in Format: yyyy-MM-dd (ISO-8601) | yes                                                          |
+      | 58    | SenderIDDocumentExpirationDate       | The Sender’s ID expire date                                         | Date in Format: yyyy-MM-dd (ISO-8601)  | yes                                                          |
+      | 59    | SenderIDDocumentNumber               | The Sender’s ID Number                                              | String                     | yes                                                          |
+      | 60    | SenderIDDocumentTypeCode             | The Sender’s ID Type code: code: use furp codes                     | String                     | yes                                                          |
+      | 61    | ServiceProviderCode                  | FURP Bank Code for beneficiary’s bank                               | string                     | Yes for Money transfer only.                                |
+      | 62    | ServiceProviderName                  | Name of the bank                                                    | String                     | Yes for Money transfer only.                                |
+      | 63    | BeneficiaryAccountNumber             | Beneficiary’s account number Bank Account number (MONEYTRANSFER) or Mobile number (MOBILETOPUP or MOBILE Money or Cash)                                | String                     | Yes                                                         |
+      | 64    | BankSwiftCode                        | The beneficiary’s bank account swift/BIC code                       | String                     | No                                                          |
+      | 65    | BankRoutingNumber                    | The Beneficiary’s account routing/sortcode/IBFT/IFSC/BEFTN          | String                     | No                                                          |
+      | 66    | BankIbanNumber                       | The beneficiary’s bank IBAN                                         | String                     | No                                                          |
+      | 67    | serviceProviderBranchCode            | Code of Branch to receive the money Conditional rules: Mandatory if CollectionMode is (Cash)                                        | String                     | No                                                          |
+      
+      
+      
+       ## Upload: Document Reference
+
+      **Description**: This file allows the partner to send uploads to FURP for processing (e.g., Compliance Documents).  
+      **Polling Period**: 15 Mins  
+      **File Naming**: e.g. `DocumentddMMyyyyHHmmss.csv` (e.g., `Document21082017142322.csv`)  
+      **Location**: Upload  
+
+      Before uploading the document uploads, the transactions should have been uploaded first.
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                                     | Type                | Mandatory |
+      |-------|----------------------|-------------------------------------------------------------|---------------------|-----------|
+      | 0     | FurpAccountNo        | FURP account number to be provided to partner.             | string              | Yes       |
+      | 1     | MTN                  | Money transfer number that this file relates to            | string              | Yes       |
+      | 2     | DocumentNo           | Unique identifier of the this upload                        | String              | Yes       |
+      | 3     | DocumentExt          | Extension of the document e.g. jpg                           | String              | Yes       |
+      | 4     | Title                | The title of the document                                   | String              | Yes       |
+      | 5     | DocumentTypeCode     | The Document Type code: use codes in appendix A              | String              | Yes       |
+      | 6     | ExpireDate           | The expiry date of the document                             | Date in Format: yyyy-MM-dd (ISO-8601)| No  |
+      | 7     | Comments             | Comments                                                     | String              | No        |
+
+      ### Physical Document File
+
+      For each record (line) in the document upload CSV file, the corresponding physical file must be uploaded on FTP in the upload folder as `DocumentNo.DocumentExt` (e.g., `10001.jpg`). It is IMPORTANT that you upload the physical files first before you upload the “document upload” CSV file.
+      
+      ## Outbound: Transaction Updates
+
+      **Description**: This file allows FURP to send transaction status updates to the partner.  
+      **Polling Period**: 15 Mins  
+      **File Naming**: It always starts with `status` (e.g., `statusddMMyyyyHHmmss.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                  | Comment                                              | Type                  | Mandatory |
+      |-------|-----------------------|------------------------------------------------------|-----------------------|-----------|
+      | 0     | FurpAccountNo         | FURP account number to be provided to partner.      | string                | Yes       |
+      | 1     | TransactionUpdateDate | Date transaction updated on FURP system             | Date in Format: yyyy-MM-dd (ISO-8601) | Yes   |
+      | 2     | TransactionUpdateTime | Time transaction updated on FURP system             | Time in format HH:mm:ss | Yes     |
+      | 3     | MTN                   | Money transfer number                               | string                | Yes       |
+      | 4     | TransactionStatusCode | Status of transaction: use codes in appendix A      | String                | Yes       |
+      | 5     | Comments              | Comments                                            | String                | No        |
+      
+      ## Outbound: Static Service Provider Data
+
+      **Description**: This file allows the partner to receive service provider data from FURP.  
+      **Polling Period**: Periodically, such as when a new bank is added.  
+      **File Naming**: It always starts with `static` (e.g., `StaticServiceProvider.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                  | Comment                                                     | Type                  | Mandatory |
+      |-------|-----------------------|-------------------------------------------------------------|-----------------------|-----------|
+      | 0     | Type                  | Type of service provider: Options: BANK, GSM or BILL.       | string                | Yes       |
+      | 1     | ServiceProviderCode   | Service provider code on FURP                               | string                | Yes       |
+      | 2     | ServiceProviderName   | Service provider name on FURP                               | string                | Yes       |
+      | 3     | CollectionModes       | Collection modes applicable to the service provider. Multiple collection modes will be comma delimited (e.g., CASH,BANKACCOUNT) | string                | Yes if Money Transfer |
+      
+      ## Outbound: Static Service Provider branches Data
+
+      **Description**: This file allows the partner to receive service provider branches data from FURP.  
+      **Polling Period**: Periodically, such as when a new bank is added.  
+      **File Naming**: It always starts with `static` (e.g., `StaticProviderCashbranches.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                  | Comment                                                     | Type                  | Mandatory |
+      |-------|-----------------------|-------------------------------------------------------------|-----------------------|-----------|
+      | 0     | ServiceProviderCode   | Service provider code on FURP                               | string                | Yes       |
+      | 1     | ServiceProviderName   | Service provider name on FURP                               | string                | Yes       |
+      | 2     | BranchCode            | Branch Code  on FURP                                        | string                | Yes       |
+      | 3     | BranchName            | Branch Name  on FURP                                        | string                | Yes       |
+      | 4     | BranchDescription     | Branch Description on FURP                                  | string                | Yes       |
+      | 5     | BranchAddress         | Branch Address on FURP                                      | string                | Yes       |
+      | 6     | BranchCity            | Branch City on FURP                                         | string                | Yes       |
+      | 7     | BranchState           | Branch State on FURP                                        | string                | Yes       |
+      | 8     | BranchPhone           | Branch Phone on FURP                                        | string                | Yes       |
+
+      ## Outbound: Static purposes code Data
+
+      **Description**: This file allows the partner to receive purposes code data from FURP.  
+      **Polling Period**: Variable, but default is 1 day.  
+      **File Naming**: It always starts with `Static` (e.g., `staticPurposes.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | Code                 | purposes code                                      | string                | Yes       |
+      | 1     | Description          | purposes   Description                              | string               | Yes   |
+
+
+      ## Outbound: Static SourceOfFunds code Data
+
+      **Description**: This file allows the partner to receive SourceOfFunds code data from FURP.  
+      **Polling Period**: Variable, but default is 1 day.  
+      **File Naming**: It always starts with `Static` (e.g., `staticSourceOfFunds.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | Code                 | SourceOfFunds code                                      | string                | Yes       |
+      | 1     | Description          | SourceOfFunds   Description                              | string               | Yes   |
+
+      ## Outbound: Static Occupations code Data
+
+      **Description**: This file allows the partner to receive Occupations code data from FURP.  
+      **Polling Period**: Variable, but default is 1 day.  
+      **File Naming**: It always starts with `Static` (e.g., `staticOccupations.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | Code                 | Occupation code                                      | string                | Yes       |
+      | 1     | Description          | Occupation   Description                              | string               | Yes   |
+
+      ## Outbound: Static Relationships code Data
+
+      **Description**: This file allows the partner to receive Relationships code data from FURP.  
+      **Polling Period**: Variable, but default is 1 day.  
+      **File Naming**: It always starts with `Static` (e.g., `staticRelationships.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | Code                 | Relationship code                                      | string                | Yes       |
+      | 1     | Description          | Relationship   Description                              | string               | Yes   |
+
+      ## Outbound: Static Employment Status code Data
+
+      **Description**: This file allows the partner to receive Employment Status code data from FURP.  
+      **Polling Period**: Variable, but default is 1 day.  
+      **File Naming**: It always starts with `Static` (e.g., `staticEmploymentStatus.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | Code                 | Employment Status code                                      | string                | Yes       |
+      | 1     | Description          | Employment Status   Description                              | string               | Yes   |
+
+      ## Outbound: Static Id Types  code Data
+
+      **Description**: This file allows the partner to receive IdTypes code data from FURP.  
+      **Polling Period**: Variable, but default is 1 day.  
+      **File Naming**: It always starts with `staticIdTypes` (e.g., `staticIdTypes.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | Code                 | IdTypes code                                      | string                | Yes       |
+      | 1     | Description          | IdTypes   Description                              | string               | Yes   |
+
+
+      ## Outbound: Rate Updates
+
+      **Description**: This file allows FURP to send rates updates to the partner.  
+      **Polling Period**: Variable, but default is 15 Mins.  
+      **File Naming**: It always starts with `rate` (e.g., `rateddMMyyyyHHmmss.csv`)  
+      **Location**: Outbound  
+
+      ### Column Details
+
+      | Order | Name                 | Comment                                             | Type                  | Mandatory |
+      |-------|----------------------|-----------------------------------------------------|-----------------------|-----------|
+      | 0     | FurpAccountNo        | FURP account number to be provided to partner.    | string                | Yes       |
+      | 1     | RateUpdateDate       | Date rate updated on FURP system                   | Date in Format: yyyy-MM-dd (ISO-8601) | Yes   |
+      | 2     | RateUpdateTime       | Time rate updated on FURP system                   | Time in format HH:mm:ss | Yes     |
+      | 3     | SettlementCurrency   | Settlement currency for the rate                    | string                | Yes       |
+      | 4     | PayoutCurrency       | Payout currency for the rate                        | string                | Yes       |
+      | 5     | MoneyTransferRate    | Exchange rate for money transfer                    | Decimal               | Yes       |
+      | 6     | MobileTopUpRate      | Exchange rate for mobile top-up service             | Decimal               | No        |
+      | 7     | BillPaymentRate      | Exchange rate for Bill Payment service             | Decimal               | No        |
+      
+      ## Appendix A: Code List
+
+      ### Transaction Status Codes
+      | Type           | Code                    | Description                                        | Comments                                 |
+      |----------------|-------------------------|----------------------------------------------------|------------------------------------------|
+      | Transaction Status | INPROGRESS             | Transaction is currently being progressed by FURP. |                                          |
+      |                | PROCESSED                | Transaction has completed successfully.            |                                          |
+      |                | AWAITINGAFFILIATEUPDATE  | Transaction is currently pending waiting for further information from Partner. |       |
+      |                | FAILED                   | The transaction has failed.                        |                                          |
+
+      ### Transaction Type Codes
+      | Type           | Code                    | Description                                        | Comments                                 |
+      |----------------|-------------------------|----------------------------------------------------|------------------------------------------|
+      | Transaction Type | MONEYTRANSFER           | Money transfer                                     |                                          |
+      |                | MOBILETOPUP              | Mobile top up                                      |                                          |
+      |                | BILLPAYMENT              | Bill payment service.                              |                                          |
+
+      ### Collection Mode Codes
+      | Type           | Code                    | Description                                        | Comments                                 |
+      |----------------|-------------------------|----------------------------------------------------|------------------------------------------|
+      | Collection Mode | BANKACCOUNT              | Bank account deposit                               |                                          |
+      |                | CASH                     | Cash collection                                    |                                          |
+      |                | MOBILEMONEY              | Mobile money                                       |                                          |
+
+  - name: MTO (Money Transfer Operator) API
+    description: |
+      ## Scope
+
+      This document describes the web methods and general flow of all transactions for the FURP MTO Business Gateway interface. This is only to be used by FGC MTO partners that use FURP for remittance payout.
+
+      ## Audience
+
+      This document is aimed at developers and analysts, as it provides necessary technical details on the API and only provides a high-level explanation of the business processes.
+
+      ## Basic Authentication Process
+
+
+      The IC API uses Basic Authentication process to secure access to its
+      services. To authenticate your requests:
+
+
+      1. Combine your API username and password into a single string, separated
+      by a colon. For example, `username:password`.
+
+      2. Encode the combined string in base64 format.
+
+      3. Include the base64-encoded string in the Authorization header of your
+      API request in the following format: `Authorization: Basic
+      {base64_encoded_username_password}`.
+      
+      
+      
+      **Example:**
+
+
+      If the agent's username is `AE0000001` and the password is
+      `superSecretPassword`, then Base64 encoding should be applied to the value
+      `AE00000001:superSecretPassword`. Then, the authorization header value
+      would be:
+
+
+      `Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==`
+      `AccessAffiliateNumber:1062` 
+
+paths:
+  /Mto/TransactionCreate:
+    post:
+      tags:
+        - MTO (Money Transfer Operator) API
+      summary: Initiate Transactions
+      description: Initiate Transactions
+      operationId: InitiateTransactions
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic QUUwMDAwMDAwMTpBQkMxMjM6UGFzc3dvcmQxMjMh"
+          description: Basic Auth token
+        - name: AccessAffiliateNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "1062"
+          description: Affiliate number
+        - name: AccessServiceNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "21012"
+          description: Service number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "./TransactionCreate.yml"
+                - $ref: "./TransactionCreate2.yml"
+      
+      
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      responseReference: "1283391"
+                    responseMessage: "Successful"
+                    responseCode: "10000"
+        
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+              examples:
+                validation_error:
+                  value:
+                    data: null
+                    responseMessage: "Validation failed for sender.MobileNumber: Sender's mobile number is required."
+                    responseCode: "30001"
+        
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+              examples:
+                auth_error:
+                  value:
+                    data: null
+                    responseMessage: "Incorrect login details provided."
+                    responseCode: "20001"
+        
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+              examples:
+                inactive_account:
+                  value:
+                    data: null
+                    responseMessage: "Account has been marked as inactive."
+                    responseCode: "30002"
+        
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+              examples:
+                system_error:
+                  value:
+                    data: null
+                    responseMessage: "General System Error"
+                    responseCode: "00000"
+  
+  /Mto/types:
+    get:
+      tags:
+        - MTO (Money Transfer Operator) API
+      summary: Retrieve  types
+      description: >-
+        Retrieve  various types required for creating transactions. For example,
+        to get all available delivery modes, use the endpoint with the filter:
+        `/types?filter=transaction-types`.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic QUUwMDAwMDAwMTpBQkMxMjM6UGFzc3dvcmQxMjMh"
+          description: Basic Auth token
+        - name: AccessAffiliateNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "1062"
+          description: Affiliate number
+        - name: AccessServiceNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "21012"
+          description: Service number
+        - name: filter
+          in: query
+          description: >-
+            Filter the static data by type (comma-separated). If not provided,
+            returns all types..
+
+
+            Allowed types:
+
+            - purposes
+
+            - source-of-funds
+
+            - occupations
+
+            - relationships
+
+            - employment-status
+
+            - id-types
+
+            - transaction-types
+
+            - collection-mode
+          schema:
+            type: string
+          example: purposes,source-of-funds
+      responses:
+        '200':
+          description: Successfully retrieved system types
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TypesResponse"
+              examples:
+                success:
+                  value: {
+                    "data": {
+                      "transactionType": [{"name": "Money Transfer", "code": "MT"}],
+                      "collectionMode": [{"name": "Bank Account", "code": "BA"}],
+                      "idDocumentTypes": [{"name": "Passport", "code": "PASS"}],
+                      "relationshipes": [{"name": "Family", "code": "FAM"}],
+                      "occupations": [{"name": "Engineer", "code": "ENG"}],
+                      "employerStatus": [{"name": "Employed", "code": "EMP"}],
+                      "purposes": [{"name": "Education", "code": "EDU"}],
+                      "sourceOfFunds": [{"name": "Salary", "code": "SAL"}]
+                    },
+                    "responseMessage": "Successful",
+                    "responseCode": "10000"
+                  }
+
+  /Mto/GetProviders:
+    get:
+      tags:
+        - MTO (Money Transfer Operator) API
+      summary: Get Providers
+      description: Retrieves static data providers based on the specified criteria.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic QUUwMDAwMDAwMTpBQkMxMjM6UGFzc3dvcmQxMjMh"
+          description: Basic Auth token
+        - name: AccessAffiliateNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "1062"
+          description: Affiliate number
+        - name: AccessServiceNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "21012"
+          description: Service number
+        - name: CountryIso3
+          in: query
+          description: Country must be a 3-letter ISO-3166 code.
+          required: true
+          schema:
+            type: string
+          example: NGA
+        - name: ServiceCode
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - MOBILETOPUP
+              - MONEYTRANSFER
+              - BILLPAYMENT
+            example: MONEYTRANSFER
+        - name: CollectionMode
+          description: '`Conditional rules: Mandatory if ServiceCode is (MONEYTRANSFER)`.'
+          in: query
+          schema:
+            type: string
+            enum:
+              - MOBILEMONEY
+              - BANKACCOUNT
+              - CASH
+          example: BANKACCOUNT
+      responses:
+        '200':
+          description: Successfully retrieved providers
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, responseMessage, responseCode]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Provider"
+                    description: List of available service providers
+                  responseMessage:
+                    type: string
+                    example: "Successfully retrieved providers"
+                  responseCode:
+                    $ref: "#/components/schemas/ApiResponse/properties/responseCode"
+              examples:
+                success:
+                  value:
+                    data:
+                      - serviceProviderCode: "2643"
+                        serviceProviderName: "INDIA BANKS"
+                        type: "MONEYTRANSFER"
+                        collectionModes: "BANKACCOUNT"
+                        branches: []
+                    responseMessage: "Successfully retrieved providers"
+                    responseCode: "10000"
+
+  /Mto/GetTransaction:
+    get:
+      tags:
+        - MTO (Money Transfer Operator) API
+      summary: Get Transaction details
+      description: >-
+        This method is used to get the status / details of an existing
+        transaction that was sent to FURP system.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic QUUwMDAwMDAwMTpBQkMxMjM6UGFzc3dvcmQxMjMh"
+          description: Basic Auth token
+        - name: AccessAffiliateNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "1062"
+          description: Affiliate number
+        - name: AccessServiceNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "21012"
+          description: Service number
+        - name: Mtn
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved transaction details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      beneficiaryAccountNumber: "0981120079628"
+                      beneficiaryFirstName: "MD Faridul"
+                      beneficiaryLastName: "Islam"
+                      payoutCurrency: "BDT"
+                      payoutPrincipal: 600.152
+                      rate: 120.0304
+                      senderFirstName: "FIROPO"
+                      senderLastName: "AKIN AGUNBIADE"
+                      serviceProviderCode: "2929"
+                      serviceProviderName: "Bangladesh Bank"
+                      settlementCurrency: "USD"
+                      statusCode: "NEW"
+                      transactionType: "MONEYTRANSFER"
+                      mtn: "12445dfgd3asas23233"
+                      settlementAmount: 5
+                    responseMessage: "Successful"
+                    responseCode: "10000"
+  /Mto/BankAccountValidate:
+    post:
+      tags:
+        - MTO (Money Transfer Operator) API
+      summary: Validate bank account
+      description: Validates a beneficiary bank account and returns account holder name details (FirstName, MiddleName, LastName). Uses the same resolution as banking details (local account enquiry then InterSwitch name enquiry if not found).
+      operationId: BankAccountValidate
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic QUUwMDAwMDAwMTpBQkMxMjM6UGFzc3dvcmQxMjMh"
+          description: Basic Auth token
+        - name: AccessAffiliateNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "1062"
+          description: Affiliate number
+        - name: AccessServiceNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "21012"
+          description: Service number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountValidateRequest"
+            example:
+              serviceProviderCode: "123"
+              beneficiaryAccountNumber: "0123456789"
+      responses:
+        '200':
+          description: Successfully validated; returns account holder name details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountValidateApiResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      message: "Success"
+                      firstName: "John"
+                      middleName: "Paul"
+                      lastName: "Doe"
+                    responseMessage: "Successful"
+                    responseCode: "10000"
+        '400':
+          description: Bad Request (e.g. invalid or missing parameters, account not found)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /Mto/GetRate:
+    get:
+      tags:
+        - MTO (Money Transfer Operator) API
+      summary: Get Exchange Rate
+      description: This method returns the exchange rates that the account has access to.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic QUUwMDAwMDAwMTpBQkMxMjM6UGFzc3dvcmQxMjMh"
+          description: Basic Auth token
+        - name: AccessAffiliateNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "1062"
+          description: Affiliate number
+        - name: AccessServiceNumber
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "21012"
+          description: Service number
+      responses:
+        '200':
+          description: Successfully retrieved exchange rates
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRateResponse"
+              examples:
+                success:
+                  value:
+                    data:
+                      - fromCurrency: "EUR"
+                        toCurrency: "SGD"
+                        rateMoneyTransfer: 2.1684
+                        rateMobileAirtime: 1.39
+                        rateBillPayment: 1.39
+                    responseMessage: "Successful"
+                    responseCode: "10000"
+
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      required: [data, responseMessage, responseCode]
+      properties:
+        responseCode:
+          type: string
+          enum:
+            - "00000"
+            - "10000"
+            - "20000"
+            - "20001"
+            - "20005"
+            - "30001"
+            - "30002"
+          description: |
+            ### API Response Codes
+            
+            | Code   | Constant Name           | Description                                                                 |
+            |--------|-------------------------|-----------------------------------------------------------------------------|
+            | 00000  | SYSTEMERROR             | General System Error                                                       |
+            | 10000  | SUCCESS                 | No Errors Occurred, The Transaction was Successful                         |
+            | 20000  | FAILED                  | Transaction Failed                                                        |
+            | 20001  | INCORRECTCREDENTIALS   | Incorrect login details provided                                          |
+            | 20005  | HASHDATAINCORRECT       | Incorrect HashData provided                                               |
+            | 30001  | MISSINGPARAMETERS       | Missing parameters needed for transaction to occur                        |
+            | 30002  | ACCOUNTINACTIVE         | Account has been marked as inactive                                       |
+            | 30002  | ITEMNOTFOUND            | Transaction not found during query search                                 |
+            
+            **Note**: 
+            - The `ITEMNOTFOUND` and `ACCOUNTINACTIVE` share the same code (30002) - consider making codes unique
+            - All codes are strings (to preserve leading zeros)
+
+        responseMessage:
+          type: string
+          enum:
+            - "General System Error"
+            - "Successful"
+            - "Transaction Failed"
+            - "Incorrect login details provided"
+            - "Incorrect HashData provided"
+            - "Missing parameters needed for transaction to occur"
+            - "Account has been marked as inactive"
+            - "Transaction not found during query search"
+        
+        data:
+          oneOf:
+            - type: object
+              properties:
+                responseReference:
+                  type: string
+                  example: "1283391"
+              required: [responseReference]
+            - type: "null"
+    TypesResponse:
+      type: object
+      required: [data, responseMessage, responseCode]
+      properties:
+        data:
+          type: object
+          description: |
+            **System Configuration Types**  
+            Contains all available system configuration options
+          properties:
+            transactionType:
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **Transaction Types**  
+                - Money Transfer  
+                - Bill Payment  
+                - Airtime Topup
+            collectionMode:
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **Collection Modes**  
+                Supported fund collection methods
+            idDocumentTypes:
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **ID Document Types**  
+                Acceptable identification documents
+            relationshipes:  # Note: Potential typo (should be relationships?)
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **Relationships**  
+                Beneficiary relationship options
+            employerStatus:
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **Employment Statuses**  
+                Current employment situations
+            purposes:
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **Transaction Purposes**  
+                Reasons for money transfer
+            sourceOfFunds:
+              type: array
+              items:
+                $ref: "#/components/schemas/NameCodePair"
+              description: |
+                **Fund Sources**  
+                Origin of transferred funds
+          required:
+            - transactionType
+            - collectionMode
+            - idDocumentTypes
+            - relationshipes
+            - employerStatus
+            - purposes
+            - sourceOfFunds
+
+        responseMessage:
+          type: string
+          example: "Successfully retrieved system types"
+
+        responseCode:
+          $ref: "#/components/schemas/ApiResponse/properties/responseCode"
+    NameCodePair:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable display name
+          example: "Passport"
+        code:
+          type: string
+          description: System identifier code
+          example: "PASS"
+      required: [name, code]
+    Provider:
+      type: object
+      properties:
+        serviceProviderCode:
+          type: string
+          description: |
+            **Service Provider Code**  
+            Unique identifier for the provider
+          example: "2643"
+        serviceProviderName:
+          type: string
+          description: |
+            **Service Provider Name**  
+            Display name of the provider
+          example: "INDIA BANKS"
+        type:
+          type: string
+          description: |
+            **Service Type**  
+            Type of service offered
+          enum:
+            - MONEYTRANSFER
+            - BILLPAYMENT
+            - AIRTIMETOPUP
+          example: "MONEYTRANSFER"
+        collectionModes:
+          type: string
+          description: |
+            **Collection Modes**  
+            Supported transaction methods
+          enum:
+            - BANKACCOUNT
+            - CASH
+            - MOBILEWALLET
+          example: "BANKACCOUNT"
+        branches:
+          type: array
+          description: |
+            **Branch Locations**  
+            Available physical branches (if any)
+          items:
+            type: object
+            properties:
+              branchCode:
+                type: string
+                nullable: true
+              address:
+                type: string
+                nullable: true
+              branchName:
+                type: string
+                nullable: true
+              description:
+                type: string
+                nullable: true
+              city:
+                type: string
+                nullable: true
+              state:
+                type: string
+                nullable: true
+              phone:
+                type: string
+                nullable: true
+          example: []
+    TransactionResponse:
+      type: object
+      required: [data, responseMessage, responseCode]
+      properties:
+        data:
+          type: object
+          description: |
+            **Transaction Details**  
+            Complete information about the money transfer transaction
+          properties:
+            beneficiaryAccountNumber:
+              type: string
+              description: |
+                **Beneficiary Account Number**  
+                Recipient's bank account number
+              example: "0981120079628"
+            beneficiaryFirstName:
+              type: string
+              description: Beneficiary's first name
+              example: "MD Faridul"
+            beneficiaryLastName:
+              type: string
+              description: Beneficiary's last name
+              example: "Islam"
+            payoutCurrency:
+              type: string
+              description: |
+                **Payout Currency**  
+                ISO currency code for recipient's currency
+              example: "BDT"
+              minLength: 3
+              maxLength: 3
+            payoutPrincipal:
+              type: number
+              format: float
+              description: |
+                **Principal Amount**  
+                Amount received by beneficiary in local currency
+              example: 600.152
+            rate:
+              type: number
+              format: float
+              description: |
+                **Exchange Rate**  
+                Rate used for currency conversion
+              example: 120.0304
+            senderFirstName:
+              type: string
+              description: Sender's first name
+              example: "FIROPO"
+            senderLastName:
+              type: string
+              description: Sender's last name
+              example: "AKIN AGUNBIADE"
+            serviceProviderCode:
+              $ref: "#/components/schemas/Provider/properties/serviceProviderCode"
+            serviceProviderName:
+              $ref: "#/components/schemas/Provider/properties/serviceProviderName"
+            settlementCurrency:
+              type: string
+              description: |
+                **Settlement Currency**  
+                ISO currency code for sender's currency
+              example: "USD"
+              minLength: 3
+              maxLength: 3
+            statusCode:
+              type: string
+              description: |
+                **Transaction Status**  
+                - NEW  
+                - PROCESSED
+                - INPROGRESS  
+                - AWAITINGAFFILIATEUPDATE  
+                - FAILED
+              enum: ["NEW", "FAILED", "AWAITINGAFFILIATEUPDATE", "PROCESSED","INPROGRESS"]
+              example: "NEW"
+            transactionType:
+              $ref: "#/components/schemas/Provider/properties/type"
+            mtn:
+              type: string
+              description: |
+                **Money Transfer Number (MTN)**  
+                Unique transaction reference ID
+              example: "12445dfgd3asas23233"
+            settlementAmount:
+              type: number
+              description: |
+                **Settlement Amount**  
+                Amount sent in sender's currency
+              example: 5
+          required:
+            - beneficiaryAccountNumber
+            - beneficiaryFirstName
+            - payoutCurrency
+            - payoutPrincipal
+            - rate
+            - senderFirstName
+            - serviceProviderCode
+            - settlementCurrency
+            - statusCode
+            - mtn
+
+        responseMessage:
+          type: string
+          description: "Successfully retrieved transaction details"
+        responseCode:
+          $ref: "#/components/schemas/ApiResponse/properties/responseCode"
+    ExchangeRateResponse:
+      type: object
+      required: [data, responseMessage, responseCode]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
+          description: List of currency conversion rates
+        responseMessage:
+          $ref: "#/components/schemas/ApiResponse/properties/responseMessage"
+        responseCode:
+          $ref: "#/components/schemas/ApiResponse/properties/responseCode"
+
+    ExchangeRate:
+      type: object
+      required: [fromCurrency, toCurrency, rateMoneyTransfer, rateMobileAirtime, rateBillPayment]
+      properties:
+        fromCurrency:
+          type: string
+          description: |
+            **Source Currency**  
+            3-letter ISO currency code
+          example: "EUR"
+          minLength: 3
+          maxLength: 3
+        toCurrency:
+          type: string
+          description: |
+            **Target Currency**  
+            3-letter ISO currency code
+          example: "SGD"
+          minLength: 3
+          maxLength: 3
+        rateMoneyTransfer:
+          type: number
+          format: float
+          description: |
+            **Money Transfer Rate**  
+            Exchange rate for money transfer transactions
+          example: 2.1684
+          minimum: 0.01
+        rateMobileAirtime:
+          type: number
+          format: float
+          description: |
+            **Mobile Airtime Rate**  
+            Exchange rate for mobile top-up transactions
+          example: 1.39
+          minimum: 0.01
+        rateBillPayment:
+          type: number
+          format: float
+          description: |
+            **Bill Payment Rate**  
+            Exchange rate for bill payment transactions
+          example: 1.39
+          minimum: 0.01
+
+    BankAccountValidateRequest:
+      type: object
+      required: [serviceProviderCode, beneficiaryAccountNumber]
+      properties:
+        serviceProviderCode:
+          type: string
+          description: FURP code for beneficiary's bank (from GetProviders). Use FGCGENERIC if not on the list.
+          example: "123"
+        beneficiaryAccountNumber:
+          type: string
+          description: Beneficiary's bank account number to validate
+          example: "0123456789"
+
+    BankAccountValidateResponse:
+      type: object
+      description: Account holder details returned when validation succeeds
+      properties:
+        message:
+          type: string
+          description: Brief information about the response (e.g. success message)
+        firstName:
+          type: string
+          description: Account holder's first name
+        middleName:
+          type: string
+          description: Account holder's middle name
+        lastName:
+          type: string
+          description: Account holder's last name
+
+    BankAccountValidateApiResponse:
+      type: object
+      required: [data, responseMessage, responseCode]
+      properties:
+        data:
+          $ref: "#/components/schemas/BankAccountValidateResponse"
+        responseMessage:
+          $ref: "#/components/schemas/ApiResponse/properties/responseMessage"
+        responseCode:
+          $ref: "#/components/schemas/ApiResponse/properties/responseCode"
