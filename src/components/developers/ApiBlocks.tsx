@@ -36,7 +36,9 @@ export function EndpointBlock({
     description,
     status = "Live",
     children,
-    exampleResponse
+    requestSamples,
+    responseSamples,
+    exampleResponse // Legacy prop
 }: {
     method: HttpMethod;
     path: string;
@@ -44,43 +46,72 @@ export function EndpointBlock({
     description: string;
     status?: "Live" | "Sandbox" | "Beta" | "Deprecated";
     children?: ReactNode;
+    requestSamples?: ReactNode;
+    responseSamples?: ReactNode;
     exampleResponse?: ReactNode;
 }) {
+    const id = path.replace(/\//g, "-").replace(/^-/, "");
+    const finalResponseSamples = responseSamples || exampleResponse;
+
     return (
-        <div className="mb-16 scroll-mt-24 pb-12 border-b last:border-0" id={path.replace(/\//g, "-").replace(/^-/, "")}>
-            <div className="flex items-center gap-4 mb-3">
-                <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-                <StatusBadge status={status} />
-            </div>
-
-            <p className="text-muted-foreground mb-6 text-lg">{description}</p>
-
-            <div className="flex items-center gap-3 p-3 rounded-md bg-muted/50 border font-mono text-sm mb-8 overflow-x-auto">
-                <Badge variant="secondary" className={cn("text-xs px-2 py-0.5", methodColors[method])}>
-                    {method}
-                </Badge>
-                <span className="text-foreground">{path}</span>
-            </div>
-
-            {exampleResponse ? (
-                <div className="flex flex-col xl:flex-row gap-8 items-start">
-                    {/* Left: Request body / params */}
-                    <div className="flex-1 min-w-0 space-y-6">
-                        {children}
-                    </div>
-                    {/* Right: Example response */}
-                    <div className="xl:w-[420px] shrink-0 space-y-4">
-                        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                            Example Response
-                        </h3>
-                        {exampleResponse}
-                    </div>
+        <div className="flex flex-col xl:flex-row border-b last:border-0" id={id}>
+            {/* Middle Column: Documentation */}
+            <div className="flex-1 min-w-0 py-12 px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <div className="flex items-center gap-4 mb-3">
+                    <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+                    <StatusBadge status={status} />
                 </div>
-            ) : (
+
+                <p className="text-muted-foreground mb-6 text-lg">{description}</p>
+
+                <div className="flex items-center gap-3 p-3 rounded-md bg-muted/50 border font-mono text-sm mb-8 overflow-x-auto">
+                    <Badge variant="secondary" className={cn("text-xs px-2 py-0.5", methodColors[method])}>
+                        {method}
+                    </Badge>
+                    <span className="text-foreground">{path}</span>
+                </div>
+
                 <div className="space-y-6">
                     {children}
                 </div>
-            )}
+            </div>
+
+            {/* Right Column: Samples */}
+            <div className="xl:w-[45%] xl:min-w-[450px] bg-[#0f172a] dark:bg-slate-900/50 p-6 lg:p-8 xl:sticky xl:top-16 xl:h-[calc(100vh-4rem)] overflow-y-auto border-l border-slate-800">
+                <div className="space-y-12">
+                    {/* Request Samples Section */}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                                Request Samples
+                            </h3>
+                            <div className="flex items-center gap-2 min-w-0">
+                                <Badge variant="outline" className="text-[10px] uppercase border-slate-700 text-slate-400 shrink-0">
+                                    {method}
+                                </Badge>
+                                <code className="text-[10px] text-slate-300 truncate">{path}</code>
+                            </div>
+                        </div>
+                        {requestSamples || (
+                            <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                                <p className="text-xs text-slate-500 italic">No specific request parameters required for this endpoint.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Response Samples Section */}
+                    {finalResponseSamples && (
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                                    Responses
+                                </h3>
+                            </div>
+                            {finalResponseSamples}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

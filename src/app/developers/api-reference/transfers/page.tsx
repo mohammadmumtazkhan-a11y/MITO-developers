@@ -1,25 +1,42 @@
 "use client";
 
-import { DocsLayout } from "@/components/layout/DocsLayout";
+import { ApiReferenceLayout } from "@/components/layout/ApiReferenceLayout";
 import { EndpointBlock } from "@/components/developers/ApiBlocks";
 import { CodeTabs } from "@/components/developers/CodeBlocks";
 import { SchemaTable } from "@/components/developers/SchemaTable";
 
 export default function TransfersApiPage() {
     return (
-        <DocsLayout>
-            <div className="max-w-5xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Transfers API</h1>
-                <p className="text-xl text-muted-foreground mb-12">
-                    The Transfers API allows you to send money internationally to bank accounts, mobile wallets, and cash pickup locations via MITO&apos;s network.
-                </p>
+        <ApiReferenceLayout>
+            <div className="flex flex-col w-full">
+                <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">Transfers API</h1>
+                    <p className="text-xl text-muted-foreground">
+                        The Transfers API allows you to send money internationally to bank accounts, mobile wallets, and cash pickup locations via MITO&apos;s network.
+                    </p>
+                </div>
 
                 <EndpointBlock
                     method="POST"
                     path="/v1/transfers/quote"
                     title="Create a Quote"
                     description="Generates a guaranteed FX rate quote for a specific source and destination currency pair. Quotes are valid for 15 minutes."
-                    exampleResponse={
+                    requestSamples={
+                        <CodeTabs
+                            tabs={[
+                                {
+                                    label: "JSON",
+                                    language: "json",
+                                    code: `{
+  "source_currency": "GBP",
+  "target_currency": "KES",
+  "source_amount": 10000
+}`
+                                }
+                            ]}
+                        />
+                    }
+                    responseSamples={
                         <CodeTabs
                             tabs={[
                                 {
@@ -70,7 +87,27 @@ export default function TransfersApiPage() {
                     path="/v1/transfers"
                     title="Create a Transfer"
                     description="Initiates a new money transfer using a previously generated quote ID and recipient bank details."
-                    exampleResponse={
+                    requestSamples={
+                        <CodeTabs
+                            tabs={[
+                                {
+                                    label: "JSON",
+                                    language: "json",
+                                    code: `{
+  "quote_id": "qte_123456789",
+  "sender_id": "snd_987654",
+  "recipient": {
+    "type": "bank_account",
+    "bank_code": "011",
+    "account_number": "1234567890"
+  },
+  "purpose_code": "family_support"
+}`
+                                }
+                            ]}
+                        />
+                    }
+                    responseSamples={
                         <CodeTabs
                             tabs={[
                                 {
@@ -107,6 +144,6 @@ export default function TransfersApiPage() {
                 </EndpointBlock>
 
             </div>
-        </DocsLayout>
+        </ApiReferenceLayout>
     );
 }

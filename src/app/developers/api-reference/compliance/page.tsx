@@ -1,6 +1,6 @@
 "use client";
 
-import { DocsLayout } from "@/components/layout/DocsLayout";
+import { ApiReferenceLayout } from "@/components/layout/ApiReferenceLayout";
 import { EndpointBlock } from "@/components/developers/ApiBlocks";
 import { CodeTabs } from "@/components/developers/CodeBlocks";
 import { SchemaTable } from "@/components/developers/SchemaTable";
@@ -9,12 +9,14 @@ import { ShieldAlert } from "lucide-react";
 
 export default function ComplianceApiPage() {
     return (
-        <DocsLayout>
-            <div className="max-w-5xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Compliance API</h1>
-                <p className="text-xl text-muted-foreground mb-6">
-                    Submit customer details for KYC (Know Your Customer), AML (Anti-Money Laundering), and sanctions screening.
-                </p>
+        <ApiReferenceLayout>
+            <div className="flex flex-col w-full">
+                <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">Compliance API</h1>
+                    <p className="text-xl text-muted-foreground mb-6">
+                        Submit customer details for KYC (Know Your Customer), AML (Anti-Money Laundering), and sanctions screening.
+                    </p>
+                </div>
 
                 <Alert className="mb-12 border-primary/20 bg-primary/5 text-primary">
                     <ShieldAlert className="h-4 w-4" />
@@ -29,7 +31,29 @@ export default function ComplianceApiPage() {
                     path="/v1/compliance/individuals"
                     title="Onboard Individual"
                     description="Submit an individual's personal details and documents for KYC and PEP/Sanctions screening."
-                    exampleResponse={
+                    requestSamples={
+                        <CodeTabs
+                            tabs={[
+                                {
+                                    label: "JSON",
+                                    language: "json",
+                                    code: `{
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "date_of_birth": "1990-01-01",
+  "nationality": "GB",
+  "address": {
+    "line1": "123 High St",
+    "city": "London",
+    "postal_code": "SW1A 1AA",
+    "country": "GB"
+  }
+}`
+                                }
+                            ]}
+                        />
+                    }
+                    responseSamples={
                         <CodeTabs
                             tabs={[
                                 {
@@ -63,6 +87,6 @@ export default function ComplianceApiPage() {
                     </div>
                 </EndpointBlock>
             </div>
-        </DocsLayout>
+        </ApiReferenceLayout>
     );
 }

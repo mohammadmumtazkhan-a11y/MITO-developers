@@ -7,9 +7,9 @@ export function Footer() {
     };
 
     return (
-        <footer className="w-full bg-[#E14918] text-white py-12 px-4 sm:px-6 lg:px-8 mt-auto">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <footer className="w-full bg-[#E14918] text-white py-12 px-6 sm:px-12 lg:px-24 mt-auto">
+            <div>
+                <div className="flex flex-col md:flex-row justify-between gap-8 mb-12">
                     {/* Solutions Column */}
                     <div className="space-y-4">
                         <h3 className="font-bold text-lg mb-6">Solutions</h3>
@@ -57,6 +57,6 @@ export function Footer() {
                     </button>
                 </div>
             </div>
-        </footer>
+        </footer >
     );
 }

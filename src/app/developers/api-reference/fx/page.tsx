@@ -1,25 +1,42 @@
 "use client";
 
-import { DocsLayout } from "@/components/layout/DocsLayout";
+import { ApiReferenceLayout } from "@/components/layout/ApiReferenceLayout";
 import { EndpointBlock } from "@/components/developers/ApiBlocks";
 import { CodeTabs } from "@/components/developers/CodeBlocks";
 import { SchemaTable } from "@/components/developers/SchemaTable";
 
 export default function FxApiPage() {
     return (
-        <DocsLayout>
-            <div className="max-w-5xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">FX API</h1>
-                <p className="text-xl text-muted-foreground mb-12">
-                    Execute standalone foreign exchange conversions between your MITO wallet balances.
-                </p>
+        <ApiReferenceLayout>
+            <div className="flex flex-col w-full">
+                <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">FX API</h1>
+                    <p className="text-xl text-muted-foreground">
+                        Execute standalone foreign exchange conversions between your MITO wallet balances.
+                    </p>
+                </div>
 
                 <EndpointBlock
                     method="POST"
                     path="/v1/fx/convert"
                     title="Execute Conversion"
                     description="Instantly convert funds from one currency wallet to another at the current spot rate."
-                    exampleResponse={
+                    requestSamples={
+                        <CodeTabs
+                            tabs={[
+                                {
+                                    label: "JSON",
+                                    language: "json",
+                                    code: `{
+  "source_currency": "USD",
+  "target_currency": "EUR",
+  "amount": 1000000
+}`
+                                }
+                            ]}
+                        />
+                    }
+                    responseSamples={
                         <CodeTabs
                             tabs={[
                                 {
@@ -53,6 +70,6 @@ export default function FxApiPage() {
                     </div>
                 </EndpointBlock>
             </div>
-        </DocsLayout>
+        </ApiReferenceLayout>
     );
 }

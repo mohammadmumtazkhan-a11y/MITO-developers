@@ -1,25 +1,46 @@
 "use client";
 
-import { DocsLayout } from "@/components/layout/DocsLayout";
+import { ApiReferenceLayout } from "@/components/layout/ApiReferenceLayout";
 import { EndpointBlock } from "@/components/developers/ApiBlocks";
 import { CodeTabs } from "@/components/developers/CodeBlocks";
 import { SchemaTable } from "@/components/developers/SchemaTable";
 
 export default function CollectionsApiPage() {
     return (
-        <DocsLayout>
-            <div className="max-w-5xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Collections API</h1>
-                <p className="text-xl text-muted-foreground mb-12">
-                    Use the Collections API to collect funds from customers or partners. Supports mobile money prompts (STK Push), bank transfers, and direct debit.
-                </p>
+        <ApiReferenceLayout>
+            <div className="flex flex-col w-full">
+                <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">Collections API</h1>
+                    <p className="text-xl text-muted-foreground">
+                        Use the Collections API to collect funds from customers or partners. Supports mobile money prompts (STK Push), bank transfers, and direct debit.
+                    </p>
+                </div>
 
                 <EndpointBlock
                     method="POST"
                     path="/v1/collections/request"
                     title="Initiate a Collection"
                     description="Send a payment request to a customer's phone or generate bank details for them to transfer to."
-                    exampleResponse={
+                    requestSamples={
+                        <CodeTabs
+                            tabs={[
+                                {
+                                    label: "JSON",
+                                    language: "json",
+                                    code: `{
+  "amount": 50000,
+  "currency": "KES",
+  "method": "mobile_money",
+  "customer": {
+    "msisdn": "+254712345678"
+  },
+  "reference": "INV-2024-001"
+}`
+                                }
+                            ]}
+                        />
+                    }
+                    responseSamples={
                         <CodeTabs
                             tabs={[
                                 {
@@ -54,6 +75,6 @@ export default function CollectionsApiPage() {
                     </div>
                 </EndpointBlock>
             </div>
-        </DocsLayout>
+        </ApiReferenceLayout>
     );
 }

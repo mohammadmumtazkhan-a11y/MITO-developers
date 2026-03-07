@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 
 export interface SchemaField {
     name: string;
@@ -10,7 +9,7 @@ export interface SchemaField {
 
 export function SchemaTable({ fields }: { fields: SchemaField[] }) {
     return (
-        <div className="w-full overflow-x-auto rounded-lg border bg-card text-card-foreground shadow-sm mb-8">
+        <div className="w-full overflow-x-auto rounded-lg border bg-card text-card-foreground shadow-sm mb-12">
             <table className="w-full text-sm text-left">
                 <thead className="bg-muted/50 text-muted-foreground border-b uppercase text-xs">
                     <tr>
@@ -20,7 +19,7 @@ export function SchemaTable({ fields }: { fields: SchemaField[] }) {
                         <th className="px-4 py-3 font-medium w-auto">Description</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y relative">
                     {fields.map((field) => (
                         <tr key={field.name} className="hover:bg-muted/30 transition-colors">
                             <td className="px-4 py-3 font-mono text-foreground font-semibold">
@@ -37,11 +36,13 @@ export function SchemaTable({ fields }: { fields: SchemaField[] }) {
                                 )}
                             </td>
                             <td className="px-4 py-3 text-muted-foreground">
-                                <p>{field.description}</p>
+                                <span className="block mb-2">{field.description}</span>
                                 {field.example && (
-                                    <div className="mt-1 flex items-start gap-2 text-xs">
-                                        <span className="text-foreground mt-0.5">Example:</span>
-                                        <code className="bg-muted px-1.5 py-0.5 rounded text-foreground font-mono">{field.example}</code>
+                                    <div className="pt-1 flex flex-wrap items-center gap-2 text-xs">
+                                        <span className="text-muted-foreground font-medium">Example:</span>
+                                        <code className="bg-muted px-1.5 py-0.5 rounded text-foreground font-mono break-all whitespace-pre-wrap max-w-full">
+                                            {field.example}
+                                        </code>
                                     </div>
                                 )}
                             </td>

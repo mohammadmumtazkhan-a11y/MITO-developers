@@ -1,25 +1,42 @@
 "use client";
 
-import { DocsLayout } from "@/components/layout/DocsLayout";
+import { ApiReferenceLayout } from "@/components/layout/ApiReferenceLayout";
 import { EndpointBlock } from "@/components/developers/ApiBlocks";
 import { CodeTabs } from "@/components/developers/CodeBlocks";
 import { SchemaTable } from "@/components/developers/SchemaTable";
 
 export default function PayoutsApiPage() {
     return (
-        <DocsLayout>
-            <div className="max-w-5xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Payouts API</h1>
-                <p className="text-xl text-muted-foreground mb-12">
-                    Programmatically withdraw settled funds from your MITO wallets to your corporate bank accounts.
-                </p>
+        <ApiReferenceLayout>
+            <div className="flex flex-col w-full">
+                <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">Payouts API</h1>
+                    <p className="text-xl text-muted-foreground">
+                        Programmatically withdraw settled funds from your MITO wallets to your corporate bank accounts.
+                    </p>
+                </div>
 
                 <EndpointBlock
                     method="POST"
                     path="/v1/payouts"
                     title="Create Payout"
                     description="Initiate a payout to an approved linked bank account."
-                    exampleResponse={
+                    requestSamples={
+                        <CodeTabs
+                            tabs={[
+                                {
+                                    label: "JSON",
+                                    language: "json",
+                                    code: `{
+  "amount": 500000,
+  "currency": "GBP",
+  "destination_account_id": "acc_556677"
+}`
+                                }
+                            ]}
+                        />
+                    }
+                    responseSamples={
                         <CodeTabs
                             tabs={[
                                 {
@@ -50,6 +67,6 @@ export default function PayoutsApiPage() {
                     </div>
                 </EndpointBlock>
             </div>
-        </DocsLayout>
+        </ApiReferenceLayout>
     );
 }
