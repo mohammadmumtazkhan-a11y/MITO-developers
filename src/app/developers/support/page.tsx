@@ -2,9 +2,7 @@
 
 import { DocsLayout } from "@/components/layout/DocsLayout";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Mail, Phone, ExternalLink } from "lucide-react";
-import Link from "next/link";
-
+import { Mail, Phone } from "lucide-react";
 export default function SupportPage() {
     return (
         <DocsLayout>

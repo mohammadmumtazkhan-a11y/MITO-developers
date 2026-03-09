@@ -9,7 +9,7 @@ export default function RetailAffiliateGuidePage() {
             <div className="max-w-4xl">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-4">Retail Affiliate Guide</h1>
                 <p className="text-xl text-muted-foreground mb-12">
-                    As a Retail Affiliate, you resell MITO's money transfer services directly to your own customers, earning commission. You can choose to build your own UI or use our Hosted Payment Pages.
+                    As a Retail Affiliate, you resell MITO&apos;s money transfer services directly to your own customers, earning commission. You can choose to build your own UI or use our Hosted Payment Pages.
                 </p>
 
                 <section className="mb-16">

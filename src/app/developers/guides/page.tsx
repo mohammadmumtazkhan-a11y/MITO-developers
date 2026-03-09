@@ -9,7 +9,7 @@ export default function GuidesIndexPage() {
             <div className="max-w-4xl">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-4">Integration Guides</h1>
                 <p className="text-xl text-muted-foreground mb-12">
-                    Step-by-step instructions on how to integrate MITO's services depending on your business model and partnership type.
+                    Step-by-step instructions on how to integrate MITO&apos;s services depending on your business model and partnership type.
                 </p>
 
                 <div className="grid md:grid-cols-2 gap-6">

@@ -9,7 +9,7 @@ export default function ApiReferenceLandingPage() {
             <div className="max-w-4xl">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-4">API Reference</h1>
                 <p className="text-xl text-muted-foreground mb-12">
-                    Explore MITO's RESTful API endpoints. Our APIs are organized around REST, have predictable resource-oriented URLs, accept JSON-encoded request bodies, and return JSON-encoded responses.
+                    Explore MITO&apos;s RESTful API endpoints. Our APIs are organized around REST, have predictable resource-oriented URLs, accept JSON-encoded request bodies, and return JSON-encoded responses.
                 </p>
 
                 <div className="grid md:grid-cols-2 gap-6">
