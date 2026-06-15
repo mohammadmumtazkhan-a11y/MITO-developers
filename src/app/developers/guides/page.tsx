@@ -14,17 +14,17 @@ export default function GuidesIndexPage() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                     <IntegrationTypeCard
-                        title="MTO Affiliate"
+                        title="MTO Submission"
                         description="Use MITO for direct money transfer capabilities. You own the customer UI, we handle the rails."
                         href="/developers/guides/mto"
                     />
                     <IntegrationTypeCard
-                        title="Retail Affiliate"
+                        title="Retail Submission"
                         description="Resell MITO money transfer services directly to end customers for commission using our UI."
                         href="/developers/guides/retail"
                     />
                     <IntegrationTypeCard
-                        title="Biller Affiliate"
+                        title="Biller Submission"
                         description="Sell goods/services and use MITO to collect funds and settle to your bank account."
                         href="/developers/guides/biller"
                     />
@@ -32,6 +32,11 @@ export default function GuidesIndexPage() {
                         title="Wholesale Biller"
                         description="Onboard multiple merchants and collect money on their behalf with complex pooled settlements."
                         href="/developers/guides/wholesale"
+                    />
+                    <IntegrationTypeCard
+                        title="SDK Integration"
+                        description="Fast-track your development with our Web and React Native SDKs for a seamless checkout experience."
+                        href="/developers/guides/sdk"
                     />
                 </div>
             </div>

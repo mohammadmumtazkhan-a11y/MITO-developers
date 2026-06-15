@@ -17,7 +17,7 @@ export default function MtoApiReference() {
                 <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl">
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                         <p className="text-lg text-muted-foreground">
-                            This specification describes the web methods and general flow of all transactions for the MITO MTO Business Gateway interface. This is designed for MTO partners that use MITO for remittance payout.
+                            This specification describes the web methods and general flow of all transactions for the MITO MTO Business Gateway interface. This is designed for MTO submissions that use MITO for remittance payout.
                         </p>
 
                         <div className="bg-muted p-6 rounded-lg mt-8 border border-border">

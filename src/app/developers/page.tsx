@@ -46,6 +46,10 @@ export default function DevelopersLandingPage() {
                             <BookOpen className="w-8 h-8 mb-3 text-muted-foreground group-hover:text-primary transition-colors" />
                             <span className="font-medium text-sm">Guides</span>
                         </Link>
+                        <Link href="/developers/guides/sdk" className="flex flex-col items-center justify-center p-6 bg-muted/30 rounded-xl hover:bg-primary/5 transition-colors group border border-border/50">
+                            <FileCode2 className="w-8 h-8 mb-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                            <span className="font-medium text-sm">SDKs</span>
+                        </Link>
                         <Link href="/developers/webhooks" className="flex flex-col items-center justify-center p-6 bg-muted/30 rounded-xl hover:bg-primary/5 transition-colors group border border-border/50">
                             <Network className="w-8 h-8 mb-3 text-muted-foreground group-hover:text-primary transition-colors" />
                             <span className="font-medium text-sm">Webhooks</span>
@@ -53,10 +57,6 @@ export default function DevelopersLandingPage() {
                         <Link href="/developers/hosted-flows" className="flex flex-col items-center justify-center p-6 bg-muted/30 rounded-xl hover:bg-primary/5 transition-colors group border border-border/50">
                             <Laptop className="w-8 h-8 mb-3 text-muted-foreground group-hover:text-primary transition-colors" />
                             <span className="font-medium text-sm">Hosted Flows</span>
-                        </Link>
-                        <Link href="/developers/resources" className="flex flex-col items-center justify-center p-6 bg-muted/30 rounded-xl hover:bg-primary/5 transition-colors group border border-border/50">
-                            <Download className="w-8 h-8 mb-3 text-muted-foreground group-hover:text-primary transition-colors" />
-                            <span className="font-medium text-sm">Downloads</span>
                         </Link>
                     </div>
                 </section>
@@ -100,6 +100,11 @@ export default function DevelopersLandingPage() {
                             description="Enterprise-grade compliance endpoints to manage case reviews and identity verification."
                             icon={<FileCode2 className="w-6 h-6" />}
                         />
+                        <CapabilityCard
+                            title="Web & Mobile SDKs"
+                            description="Integrate faster with our pre-built libraries for React and React Native."
+                            icon={<Laptop className="w-6 h-6" />}
+                        />
                     </div>
                 </section>
 
@@ -113,17 +118,17 @@ export default function DevelopersLandingPage() {
                             </p>
                             <div className="space-y-4">
                                 <IntegrationTypeCard
-                                    title="MTO Affiliate"
+                                    title="MTO Submission"
                                     description="Use MITO for direct money transfer capabilities, handling KYC and FX."
                                     href="/developers/guides/mto"
                                 />
                                 <IntegrationTypeCard
-                                    title="Retail Affiliate"
+                                    title="Retail Submission"
                                     description="Resell MITO money transfer services directly to end customers for commission."
                                     href="/developers/guides/retail"
                                 />
                                 <IntegrationTypeCard
-                                    title="Biller Affiliate"
+                                    title="Biller Submission"
                                     description="Sell goods/services and use MITO to collect funds and settle to your bank account."
                                     href="/developers/guides/biller"
                                 />
@@ -131,6 +136,11 @@ export default function DevelopersLandingPage() {
                                     title="Wholesale Biller"
                                     description="Onboard merchants and collect money on their behalf with pooled settlements."
                                     href="/developers/guides/wholesale"
+                                />
+                                <IntegrationTypeCard
+                                    title="SDK Integration"
+                                    description="Best for Third-Party Developers building custom checkout experiences on Web or Mobile."
+                                    href="/developers/guides/sdk"
                                 />
                             </div>
                         </div>

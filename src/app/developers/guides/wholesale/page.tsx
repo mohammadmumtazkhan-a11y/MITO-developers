@@ -2,6 +2,7 @@
 
 import { DocsLayout } from "@/components/layout/DocsLayout";
 import { FlowDiagram, FlowNode, FlowArrow } from "@/components/developers/Flows";
+import { CodeBlock } from "@/components/developers/CodeBlocks";
 
 export default function WholesaleBillerGuidePage() {
     return (
@@ -28,6 +29,45 @@ export default function WholesaleBillerGuidePage() {
                             </div>
                         </div>
                     </FlowDiagram>
+                </section>
+
+                <section className="mb-16">
+                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-8">
+                        <h2 className="text-2xl font-bold mb-4">Optimized Collections: MITO SDK</h2>
+                        <p className="text-muted-foreground mb-6">
+                            For high-volume sub-merchant aggregation, use the MITO Link SDK with the <code>retail-collection</code> flow to automate onboarding and reconciliation.
+                        </p>
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold">SDK Configuration</h3>
+                                <CodeBlock 
+                                    code={`import { useMitoLink } from '@mito-money/mito-link';
+
+const { open } = useMitoLink({
+  linkToken: 'token_from_your_backend',
+  publishableKey: 'pk_live_...',
+  environment: 'production',
+  linkType: 'retail-collection'
+});`} 
+                                    language="javascript" 
+                                />
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold">Initiation Request</h3>
+                                <CodeBlock 
+                                    code={`POST /api/v1/transactions
+{
+  "sendAmount": 1000,
+  "sendCurrency": "USD",
+  "serviceCode": "retail-collection",
+  "subMerchantId": "sub_12345"
+}`} 
+                                    language="json" 
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </DocsLayout>

@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Integrate MITO services including Payments, FX, Verification, and Affiliate tools with our developer-friendly APIs and step-by-step guides.",
 };
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,6 +26,7 @@ export default function RootLayout({
         <TooltipProvider>
           {children}
         </TooltipProvider>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

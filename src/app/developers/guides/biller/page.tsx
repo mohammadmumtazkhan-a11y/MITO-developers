@@ -2,14 +2,15 @@
 
 import { DocsLayout } from "@/components/layout/DocsLayout";
 import { FlowDiagram, FlowNode, FlowArrow, StepFlow } from "@/components/developers/Flows";
+import { CodeBlock } from "@/components/developers/CodeBlocks";
 
 export default function BillerAffiliateGuidePage() {
     return (
         <DocsLayout>
             <div className="max-w-4xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Biller Affiliate Guide</h1>
+                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Biller Submission Guide</h1>
                 <p className="text-xl text-muted-foreground mb-12">
-                    As a Biller Affiliate, you sell goods or services and use MITO to collect funds and settle them to your local bank account.
+                    As a Biller Submission, you sell goods or services and use MITO to collect funds and settle them to your local bank account.
                 </p>
 
                 <section className="mb-16">
@@ -47,6 +48,49 @@ export default function BillerAffiliateGuidePage() {
                             }
                         ]}
                     />
+                </section>
+
+                <section className="mb-16">
+                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-8">
+                        <h2 className="text-2xl font-bold mb-4">New: MITO SDK Integration</h2>
+                        <p className="text-muted-foreground mb-6">
+                            Streamline your checkout with the MITO Link SDK. Perfect for embedding a native-feel checkout experience directly into your web application.
+                        </p>
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold">1. Install Package</h3>
+                                <CodeBlock code="npm install @mito-money/mito-link" language="bash" />
+                                
+                                <h3 className="text-lg font-semibold mt-6">2. Initialize on Frontend</h3>
+                                <CodeBlock 
+                                    code={`import { useMitoLink } from '@mito-money/mito-link';
+
+const { open } = useMitoLink({
+  linkToken: 'token_from_your_backend',
+  publishableKey: 'pk_test_...',
+  environment: 'sandbox',
+  linkType: 'bill-payment'
+});`} 
+                                    language="javascript" 
+                                />
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold">Backend Initiation</h3>
+                                <p className="text-sm text-muted-foreground">First, call our API from your server to get a linkToken:</p>
+                                <CodeBlock 
+                                    code={`POST /api/v1/transactions
+{
+  "sendAmount": 100,
+  "sendCurrency": "USD",
+  "serviceCode": "bill-payment",
+  "beneficiary": { ... }
+}`} 
+                                    language="json" 
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </DocsLayout>

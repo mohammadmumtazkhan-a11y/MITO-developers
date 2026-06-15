@@ -22,6 +22,7 @@ interface NavItem {
     href: string;
     icon?: React.ReactNode;
     disabled?: boolean;
+    items?: NavItem[];
 }
 
 interface NavGroup {
@@ -41,10 +42,17 @@ const docsConfig: NavGroup[] = [
         title: "Integration Guides",
         items: [
             { title: "Guides Overview", href: "/developers/guides", icon: <Code2 className="w-4 h-4" /> },
-            { title: "MTO Partner", href: "/developers/guides/mto" },
-            { title: "Retail Affiliate", href: "/developers/guides/retail" },
-            { title: "Biller Affiliate", href: "/developers/guides/biller" },
-            { title: "Wholesale Biller", href: "/developers/guides/wholesale" },
+            { title: "MTO Submission", href: "/developers/guides/mto" },
+            { title: "Retail Submission", href: "/developers/guides/retail" },
+            { 
+                title: "Biller Submission", 
+                href: "/developers/guides/biller",
+                items: [
+                    { title: "Wholesale Biller", href: "/developers/guides/wholesale" },
+                    { title: "Biller Submission", href: "/developers/guides/merchant" },
+                ]
+            },
+            { title: "SDK Integration", href: "/developers/guides/sdk" },
         ],
     },
     {
@@ -94,20 +102,40 @@ export function DocsSidebar() {
                             </h4>
                             <div className="flex flex-col gap-1">
                                 {group.items.map((item, itemIndex) => (
-                                    <Link
-                                        key={itemIndex}
-                                        href={item.href}
-                                        className={cn(
-                                            "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors hover:bg-muted hover:text-primary",
-                                            pathname === item.href || pathname?.startsWith(item.href + "/") && item.href !== "/developers" && item.href !== "/developers/guides" && item.href !== "/developers/api-reference"
-                                                ? "bg-primary/10 text-primary"
-                                                : "text-muted-foreground",
-                                            item.disabled && "cursor-not-allowed opacity-60"
+                                    <div key={itemIndex} className="flex flex-col gap-1">
+                                        <Link
+                                            href={item.href}
+                                            className={cn(
+                                                "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors hover:bg-muted hover:text-primary",
+                                                pathname === item.href || (pathname?.startsWith(item.href + "/") && item.href !== "/developers" && item.href !== "/developers/guides" && item.href !== "/developers/api-reference")
+                                                    ? "bg-primary/10 text-primary"
+                                                    : "text-muted-foreground",
+                                                item.disabled && "cursor-not-allowed opacity-60"
+                                            )}
+                                        >
+                                            {item.icon && <span className="shrink-0">{item.icon}</span>}
+                                            {item.title}
+                                        </Link>
+                                        {item.items && (
+                                            <div className="flex flex-col gap-1 ml-6 border-l pl-4">
+                                                {item.items.map((subItem, subIndex) => (
+                                                    <Link
+                                                        key={subIndex}
+                                                        href={subItem.href}
+                                                        className={cn(
+                                                            "flex items-center gap-2 rounded-md px-2 py-1 text-xs font-medium transition-colors hover:bg-muted hover:text-primary",
+                                                            pathname === subItem.href
+                                                                ? "text-primary"
+                                                                : "text-muted-foreground/70",
+                                                            subItem.disabled && "cursor-not-allowed opacity-60"
+                                                        )}
+                                                    >
+                                                        {subItem.title}
+                                                    </Link>
+                                                ))}
+                                            </div>
                                         )}
-                                    >
-                                        {item.icon && <span className="shrink-0">{item.icon}</span>}
-                                        {item.title}
-                                    </Link>
+                                    </div>
                                 ))}
                             </div>
                         </div>

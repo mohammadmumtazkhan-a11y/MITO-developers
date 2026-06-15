@@ -10,7 +10,7 @@ export default function MtoGuidePage() {
         <ApiReferenceLayout>
             <div className="flex flex-col w-full">
                 <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
-                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">MTO Affiliate Guide</h1>
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-4">MTO Submission Guide</h1>
                     <p className="text-xl text-muted-foreground">
                         As a Money Transfer Operator (MTO), you own the customer relationship and UI. You use MITO&apos;s APIs strictly for backend remittance execution, KYC compliance, and FX.
                     </p>
@@ -80,7 +80,7 @@ export default function MtoGuidePage() {
                         <div className="pt-8 border-t">
                             <h2 className="text-2xl font-bold mb-4">Prerequisites</h2>
                             <ul className="list-disc pl-6 space-y-2 text-muted-foreground text-sm">
-                                <li>A signed MTO Affiliate contract.</li>
+                                <li>A signed MTO Submission contract.</li>
                                 <li>A pre-funded MITO operational wallet.</li>
                                 <li>PCI-compliant architecture for card payments.</li>
                             </ul>

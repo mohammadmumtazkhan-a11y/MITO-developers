@@ -34,7 +34,7 @@ export function Header() {
         </div>
         <div className="flex items-center space-x-4">
           <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-md px-6 font-semibold">
-            <Link href="https://mito.money/login" target="_blank">
+            <Link href="/login">
               Login <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
