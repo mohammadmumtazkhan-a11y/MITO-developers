@@ -9,7 +9,6 @@ import {
     ArrowRightLeft,
     ShieldCheck,
     Network,
-    Download,
     BookOpen,
     Terminal,
     FileCode2,

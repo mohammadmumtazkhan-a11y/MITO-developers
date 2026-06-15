@@ -10,7 +10,7 @@ export default function SDKIntegrationGuidePage() {
             <div className="max-w-4xl">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-4">SDK Integration Guide</h1>
                 <p className="text-xl text-muted-foreground mb-8">
-                    The MITO Link SDK is the fastest way to integrate MITO's payment and transfer capabilities into your application with a native-feel checkout experience.
+                    The MITO Link SDK is the fastest way to integrate MITO&apos;s payment and transfer capabilities into your application with a native-feel checkout experience.
                 </p>
 
                 <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 flex gap-3 mb-12">
