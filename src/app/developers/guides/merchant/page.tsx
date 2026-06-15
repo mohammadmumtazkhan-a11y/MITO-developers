@@ -7,9 +7,9 @@ export default function MerchantBillerGuidePage() {
     return (
         <DocsLayout>
             <div className="max-w-4xl">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Biller Submission Guide</h1>
+                <h1 className="text-4xl font-extrabold tracking-tight mb-4">Merchant Biller Guide</h1>
                 <p className="text-xl text-muted-foreground mb-12">
-                    As a Biller Submission, you integrate MITO directly into your checkout flow to accept payments from customers. MITO provides the infrastructure for secure, real-time transaction processing.
+                    As a Merchant Biller, you integrate MITO directly into your checkout flow to accept payments from customers. MITO provides the infrastructure for secure, real-time transaction processing.
                 </p>
 
                 <section className="mb-16">

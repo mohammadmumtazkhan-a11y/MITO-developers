@@ -49,7 +49,7 @@ const docsConfig: NavGroup[] = [
                 href: "/developers/guides/biller",
                 items: [
                     { title: "Wholesale Biller", href: "/developers/guides/wholesale" },
-                    { title: "Biller Submission", href: "/developers/guides/merchant" },
+                    { title: "Merchant Biller", href: "/developers/guides/merchant" },
                 ]
             },
             { title: "SDK Integration", href: "/developers/guides/sdk" },
