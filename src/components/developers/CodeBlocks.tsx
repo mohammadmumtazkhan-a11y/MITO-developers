@@ -49,12 +49,12 @@ export function CodeTabs({ tabs, height = "220px" }: { tabs: CodeTab[]; height?:
 
     return (
         <Tabs defaultValue={tabs[0].label} className="w-full flex flex-col">
-            <TabsList className="w-full justify-start rounded-b-none border-b border-slate-800 bg-transparent p-0 shrink-0">
+            <TabsList className="w-full justify-start rounded-t-lg rounded-b-none border-t border-x border-b border-slate-800 bg-[#0d1117] p-0 shrink-0">
                 {tabs.map((tab) => (
                     <TabsTrigger
                         key={tab.label}
                         value={tab.label}
-                        className="rounded-none border-b-2 border-transparent text-slate-400 hover:text-slate-300 data-[state=active]:text-white data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2 text-sm font-medium"
+                        className="rounded-none border-b-2 border-transparent text-slate-400 hover:text-slate-200 data-[state=active]:text-white data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2 text-sm font-medium"
                     >
                         {tab.label}
                     </TabsTrigger>
