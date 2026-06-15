@@ -12,16 +12,16 @@ interface ApiReferenceLayoutProps {
 
 export function ApiReferenceLayout({ children }: ApiReferenceLayoutProps) {
     const router = useRouter();
-    const [authorized, setAuthorized] = useState(false);
+    const [authorized] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return document.cookie.split(";").some((c) => c.trim().startsWith("isLoggedIn="));
+    });
 
     useEffect(() => {
-        const isLoggedIn = document.cookie.split(";").some((c) => c.trim().startsWith("isLoggedIn="));
-        if (!isLoggedIn) {
+        if (!authorized) {
             router.push("/login");
-        } else {
-            setAuthorized(true);
         }
-    }, [router]);
+    }, [authorized, router]);
 
     if (!authorized) {
         return (

@@ -13,18 +13,17 @@ interface DocsLayoutProps {
 
 export function DocsLayout({ children, showSidebar = true }: DocsLayoutProps) {
     const router = useRouter();
-    const [authorized, setAuthorized] = useState(!showSidebar);
+    const [authorized] = useState(() => {
+        if (!showSidebar) return true;
+        if (typeof window === "undefined") return false;
+        return document.cookie.split(";").some((c) => c.trim().startsWith("isLoggedIn="));
+    });
 
     useEffect(() => {
-        if (showSidebar) {
-            const isLoggedIn = document.cookie.split(";").some((c) => c.trim().startsWith("isLoggedIn="));
-            if (!isLoggedIn) {
-                router.push("/login");
-            } else {
-                setAuthorized(true);
-            }
+        if (showSidebar && !authorized) {
+            router.push("/login");
         }
-    }, [showSidebar, router]);
+    }, [showSidebar, authorized, router]);
 
     if (showSidebar && !authorized) {
         return (
