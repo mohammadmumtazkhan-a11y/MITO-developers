@@ -26,6 +26,7 @@ import {
     Settings,
     FileCode2,
     TerminalSquare,
+    ChevronDown,
 } from "lucide-react";
 import type { NavGroup, NavItem } from "@/lib/docs-nav";
 
@@ -105,9 +106,9 @@ const docsConfig: NavGroup[] = [
             { title: "SDK", href: "/developers/api-reference/sdk", icon: <FileCode2 className="w-4 h-4" /> },
             { title: "Hosted checkout", href: "/developers/api-reference/hosted", icon: <TerminalSquare className="w-4 h-4" /> },
             { title: "FTP file formats", href: "/developers/api-reference/ftp", icon: <FileText className="w-4 h-4" /> },
-            { title: "Retail API (full)", href: "/developers/api-reference/retail-api", icon: <Globe className="w-4 h-4" /> },
-            { title: "Biller API (full)", href: "/developers/api-reference/biller-api", icon: <Store className="w-4 h-4" /> },
-            { title: "MTO API (full)", href: "/developers/api-reference/mto-api", icon: <Landmark className="w-4 h-4" /> },
+            { title: "Retail API (full)", href: "/developers/api-reference/retail-api", icon: <Globe className="w-4 h-4" />, items: [] },
+            { title: "Biller API (full)", href: "/developers/api-reference/biller-api", icon: <Store className="w-4 h-4" />, items: [] },
+            { title: "MTO API (full)", href: "/developers/api-reference/mto-api", icon: <Landmark className="w-4 h-4" />, items: [] },
         ],
     },
     {
@@ -160,7 +161,7 @@ function NavLink({ item, nested }: { item: NavItem; nested?: boolean }) {
 }
 
 export function DocsSidebar() {
-    const pathname = usePathname();
+    const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
     return (
         <aside className="fixed top-16 z-30 -ml-2 hidden h-[calc(100vh-4rem)] w-full shrink-0 md:sticky md:block md:w-64 lg:w-72">
@@ -173,14 +174,32 @@ export function DocsSidebar() {
                             </h4>
                             <div className="flex flex-col gap-1">
                                 {group.items.map((item, itemIdx) => {
-                                    // Collapse by default: expand sub-items only when parent path matches current URL
-                                    const isParentActive = isNavItemActive(pathname, item.href) || pathname === item.href;
+                                    const isExpanded = !!expandedItems[item.title];
+                                    const hasItems = item.items && item.items.length > 0;
                                     return (
                                         <div key={itemIdx} className="flex flex-col gap-1">
-                                            <NavLink item={item} />
-                                            {item.items && isParentActive && (
+                                            <div className="flex items-center justify-between gap-1 w-full">
+                                                <div className="flex-1 min-w-0">
+                                                    <NavLink item={item} />
+                                                </div>
+                                                {hasItems && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setExpandedItems(prev => ({
+                                                                ...prev,
+                                                                [item.title]: !prev[item.title]
+                                                            }));
+                                                        }}
+                                                        className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-primary transition-colors shrink-0"
+                                                        aria-label={isExpanded ? "Collapse" : "Expand"}
+                                                    >
+                                                        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", isExpanded ? "rotate-180" : "rotate-0")} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                            {hasItems && isExpanded && (
                                                 <div className="flex flex-col gap-1 ml-6 border-l pl-4 animate-in fade-in slide-in-from-top-1 duration-200">
-                                                    {item.items.map((subItem, subIdx) => (
+                                                    {item.items!.map((subItem, subIdx) => (
                                                         <NavLink key={subIdx} item={subItem} nested />
                                                     ))}
                                                 </div>
