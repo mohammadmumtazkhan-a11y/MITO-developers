@@ -416,55 +416,6 @@ export default function GetStartedPage() {
                     </div>
                 </section>
 
-                <section className="scroll-mt-24" id="authorization">
-                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">4</span>
-                        Authorization
-                    </h2>
-                    <div className="pl-0 md:pl-11">
-                        <p className="text-muted-foreground mb-6">
-                            For corridors utilizing MTO partner integrations, configure your request tool with the following Basic Authentication credentials:
-                        </p>
-
-                        <div className="overflow-x-auto rounded-lg border bg-card shadow-sm mb-6 max-w-2xl">
-                            <table className="w-full text-sm text-left border-collapse">
-                                <thead className="bg-muted/50 text-muted-foreground border-b">
-                                    <tr>
-                                        <th className="px-4 py-3 font-medium w-1/3">Parameter</th>
-                                        <th className="px-4 py-3 font-medium">Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y">
-                                    <tr>
-                                        <td className="px-4 py-4 font-mono text-primary">Auth Type</td>
-                                        <td className="px-4 py-4 text-muted-foreground font-semibold">Basic Auth</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="px-4 py-4 font-mono text-primary">Username</td>
-                                        <td className="px-4 py-4 text-muted-foreground font-mono font-semibold">Transfast</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="px-4 py-4 font-mono text-primary">Password</td>
-                                        <td className="px-4 py-4 text-muted-foreground font-mono flex items-center justify-between gap-4">
-                                            <span className="truncate max-w-[200px] sm:max-w-none">{showPassword ? "transfast_secret_sandbox_key_2026" : "••••••••••••••••••••"}</span>
-                                            <button
-                                                onClick={() => setShowPassword(!showPassword)}
-                                                className="text-primary hover:underline text-xs font-semibold shrink-0"
-                                            >
-                                                {showPassword ? "Hide" : "Show"}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                            The authorization header will be automatically generated when you send the request. Learn more about <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization#basic_authentication" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">Basic Auth</a> authorization.
-                        </p>
-                    </div>
-                </section>
-
                 <section className="scroll-mt-24" id="errors">
                     <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                         Errors
@@ -513,7 +464,7 @@ export default function GetStartedPage() {
 
                 <section className="scroll-mt-24" id="first-request">
                     <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">5</span>
+                        <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">4</span>
                         Your First Request
                     </h2>
                     <div className="pl-0 md:pl-11">

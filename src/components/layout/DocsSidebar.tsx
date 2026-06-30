@@ -52,7 +52,6 @@ const docsConfig: NavGroup[] = [
                     { title: "Integration Journey", href: "/developers/get-started#journey" },
                     { title: "Environments & Keys", href: "/developers/get-started#environments" },
                     { title: "Authentication", href: "/developers/get-started#authentication" },
-                    { title: "Authorization", href: "/developers/get-started#authorization" },
                     { title: "Errors", href: "/developers/get-started#errors" },
                     { title: "Your First Request", href: "/developers/get-started#first-request" },
                 ],
