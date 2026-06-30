@@ -185,12 +185,6 @@ export default function GetStartedPage() {
                                 </thead>
                                 <tbody className="divide-y">
                                     <tr>
-                                        <td className="px-4 py-4 font-mono text-primary flex items-center gap-2">
-                                            Authorization
-                                        </td>
-                                        <td className="px-4 py-4 text-muted-foreground">Bearer <span className="bg-muted px-1.5 py-0.5 rounded font-mono text-xs text-foreground font-medium">{apiKey}</span></td>
-                                    </tr>
-                                    <tr>
                                         <td className="px-4 py-4 font-mono text-primary">Content-Type</td>
                                         <td className="px-4 py-4 text-muted-foreground">Must be <code className="bg-muted px-1.5 py-0.5 rounded text-foreground font-medium">application/json</code> for POST/PUT/PATCH requests.</td>
                                     </tr>
