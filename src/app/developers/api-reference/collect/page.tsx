@@ -26,6 +26,7 @@ function PhasePage({
                     method: e.method,
                     path: e.path,
                     title: e.title,
+                    description: e.description,
                     href: e.href,
                 }))}
                 relatedDocs={[
