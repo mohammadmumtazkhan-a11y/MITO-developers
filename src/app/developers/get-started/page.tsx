@@ -16,6 +16,7 @@ export default function GetStartedPage() {
     const [isSimulating, setIsSimulating] = useState(false);
     const [simulatedResponse, setSimulatedResponse] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const baseUrl = env === "sandbox" ? "https://api.sandbox.mito.money/v1" : "https://api.mito.money/v1";
     const apiKey = env === "sandbox" ? "sk_test_51Nx...8zL" : "sk_live_51Nx...9pR";
@@ -215,6 +216,93 @@ export default function GetStartedPage() {
                     </div>
                 </section>
 
+                <section className="scroll-mt-24" id="authorization">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">4</span>
+                        Authorization
+                    </h2>
+                    <div className="pl-0 md:pl-11">
+                        <p className="text-muted-foreground mb-6">
+                            For corridors utilizing MTO partner integrations, configure the authorization settings using Basic Authentication in your request tool.
+                        </p>
+
+                        {/* Interactive Postman-style Auth UI */}
+                        <div className="rounded-xl border border-border/80 bg-[#0F1420] text-slate-100 shadow-lg overflow-hidden">
+                            {/* Tabs Header bar mimicking Postman */}
+                            <div className="bg-[#161C2C] px-4 py-3 border-b border-border/80 flex items-center gap-6 text-xs font-semibold text-slate-400 overflow-x-auto select-none">
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Docs</span>
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Params</span>
+                                <span className="text-primary border-b-2 border-primary pb-3 -mb-3 flex items-center gap-1.5 shrink-0 font-bold">
+                                    Authorization
+                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                                </span>
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Headers <span className="text-[10px] bg-slate-800 text-slate-400 px-1 py-0.5 rounded-full ml-1 font-mono">9</span></span>
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Body</span>
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Scripts</span>
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Tests</span>
+                                <span className="hover:text-slate-200 transition-colors cursor-pointer shrink-0">Settings</span>
+                            </div>
+
+                            {/* Tab Content Area */}
+                            <div className="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                                {/* Left Column: Auth Type & Desc */}
+                                <div className="lg:col-span-5 space-y-4">
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Auth Type</label>
+                                        <div className="w-full bg-[#182032] border border-border/60 rounded-lg px-4 py-2 text-sm font-medium text-slate-200 flex items-center justify-between cursor-not-allowed select-none">
+                                            <span>Basic Auth</span>
+                                            <span className="text-slate-500 text-xs">▼</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs leading-relaxed text-slate-400 pt-2">
+                                        The authorization header will be automatically generated when you send the request. Learn more about <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization#basic_authentication" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">Basic Auth</a> authorization.
+                                    </p>
+                                </div>
+
+                                {/* Right Column: Fields */}
+                                <div className="lg:col-span-7 space-y-5 border-l-0 lg:border-l border-slate-800 lg:pl-8">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Username</label>
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            value="Transfast"
+                                            className="w-full bg-[#182032] border border-border/80 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-200 focus:outline-none cursor-text select-all"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                                        <div className="relative flex items-center">
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                readOnly
+                                                value="transfast_secret_sandbox_key_2026"
+                                                className="w-full bg-[#182032] border border-border/80 rounded-lg px-4 py-2.5 pr-10 text-sm font-mono text-slate-200 focus:outline-none cursor-text select-all"
+                                            />
+                                            <button
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3 text-slate-500 hover:text-slate-300 transition-colors"
+                                                title={showPassword ? "Hide password" : "Show password"}
+                                            >
+                                                {showPassword ? (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section className="scroll-mt-24" id="errors">
                     <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                         Errors
@@ -263,7 +351,7 @@ export default function GetStartedPage() {
 
                 <section className="scroll-mt-24" id="first-request">
                     <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">4</span>
+                        <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">5</span>
                         Your First Request
                     </h2>
                     <div className="pl-0 md:pl-11">
