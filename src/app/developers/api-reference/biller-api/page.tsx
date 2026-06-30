@@ -31,7 +31,7 @@ export default function BillerApiReference() {
 
                 {/* Authentication and Setup */}
                 <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b space-y-6">
-                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                    <h2 id="auth" className="text-2xl font-bold flex items-center gap-2">
                         <ShieldCheck className="w-6 h-6 text-primary" /> Biller Authentication
                     </h2>
                     <p className="text-muted-foreground">

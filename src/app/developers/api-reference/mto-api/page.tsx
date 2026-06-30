@@ -35,7 +35,7 @@ export default function MtoApiReference() {
 
                 {/* Authentication & Setup Overview */}
                 <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
-                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <h2 id="setup" className="text-2xl font-bold mb-6 flex items-center gap-2">
                         <ShieldCheck className="w-6 h-6 text-primary" /> Setup & Authorization
                     </h2>
                     <div className="prose prose-slate dark:prose-invert max-w-none space-y-4">

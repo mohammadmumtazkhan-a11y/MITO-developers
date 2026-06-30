@@ -34,7 +34,16 @@ const docsConfig: NavGroup[] = [
     {
         title: "Getting Started",
         items: [
-            { title: "Introduction", href: "/developers", icon: <Book className="w-4 h-4" /> },
+            {
+                title: "Introduction",
+                href: "/developers",
+                icon: <Book className="w-4 h-4" />,
+                items: [
+                    { title: "Three Transfer Phases", href: "/developers#transfer-phases" },
+                    { title: "Integration Models", href: "/developers#choose-model" },
+                    { title: "Ready to test?", href: "/developers#ready-to-test" },
+                ],
+            },
             {
                 title: "Getting Started",
                 href: "/developers/get-started",
@@ -55,7 +64,16 @@ const docsConfig: NavGroup[] = [
     {
         title: "Documentation",
         items: [
-            { title: "Overview", href: "/developers/guides", icon: <Code2 className="w-4 h-4" /> },
+            {
+                title: "Overview",
+                href: "/developers/guides",
+                icon: <Code2 className="w-4 h-4" />,
+                items: [
+                    { title: "Integration Models", href: "/developers/guides#models" },
+                    { title: "Integration Methods", href: "/developers/guides#methods" },
+                    { title: "Platform", href: "/developers/guides#platform" },
+                ],
+            },
             {
                 title: "Retail affiliate",
                 href: "/developers/guides/retail",
@@ -76,7 +94,16 @@ const docsConfig: NavGroup[] = [
                 icon: <Landmark className="w-4 h-4" />,
                 items: [
                     { title: "FTP batch", href: "/developers/file-integration/mto-ftp" },
-                    { title: "File integration", href: "/developers/file-integration" },
+                    {
+                        title: "File integration",
+                        href: "/developers/file-integration",
+                        items: [
+                            { title: "When to use", href: "/developers/file-integration#when-to-use" },
+                            { title: "Folder structure", href: "/developers/file-integration#folder-structure" },
+                            { title: "Documentation", href: "/developers/file-integration#documentation" },
+                            { title: "Related", href: "/developers/file-integration#related" },
+                        ]
+                    },
                 ],
             },
         ],
@@ -91,8 +118,27 @@ const docsConfig: NavGroup[] = [
     {
         title: "Platform",
         items: [
-            { title: "Webhooks", href: "/developers/webhooks", icon: <Network className="w-4 h-4" /> },
-            { title: "Settlement & Wallets", href: "/developers/settlement", icon: <Building2 className="w-4 h-4" /> },
+            {
+                title: "Webhooks",
+                href: "/developers/webhooks",
+                icon: <Network className="w-4 h-4" />,
+                items: [
+                    { title: "Core behaviour", href: "/developers/webhooks#core-behaviour" },
+                    { title: "Signature verification", href: "/developers/webhooks#signature-verification" },
+                    { title: "Events by phase", href: "/developers/webhooks#events-by-phase" },
+                ],
+            },
+            {
+                title: "Settlement & Wallets",
+                href: "/developers/settlement",
+                icon: <Building2 className="w-4 h-4" />,
+                items: [
+                    { title: "Wallet model", href: "/developers/settlement#wallet-model" },
+                    { title: "Settlement flow", href: "/developers/settlement#settlement-flow" },
+                    { title: "Reconciliation", href: "/developers/settlement#reconciliation" },
+                    { title: "Related flows", href: "/developers/settlement#related-flows" },
+                ],
+            },
         ],
     },
     {
@@ -105,10 +151,39 @@ const docsConfig: NavGroup[] = [
             { title: "Manage", href: "/developers/api-reference/manage", icon: <Settings className="w-4 h-4" /> },
             { title: "SDK", href: "/developers/api-reference/sdk", icon: <FileCode2 className="w-4 h-4" /> },
             { title: "Hosted checkout", href: "/developers/api-reference/hosted", icon: <TerminalSquare className="w-4 h-4" /> },
-            { title: "FTP file formats", href: "/developers/api-reference/ftp", icon: <FileText className="w-4 h-4" /> },
-            { title: "Retail API (full)", href: "/developers/api-reference/retail-api", icon: <Globe className="w-4 h-4" />, items: [] },
-            { title: "Biller API (full)", href: "/developers/api-reference/biller-api", icon: <Store className="w-4 h-4" />, items: [] },
-            { title: "MTO API (full)", href: "/developers/api-reference/mto-api", icon: <Landmark className="w-4 h-4" />, items: [] },
+            {
+                title: "FTP file formats",
+                href: "/developers/api-reference/ftp",
+                icon: <FileText className="w-4 h-4" />,
+                items: [
+                    { title: "General file rules", href: "/developers/api-reference/ftp#rules" },
+                ],
+            },
+            {
+                title: "Retail API (full)",
+                href: "/developers/api-reference/retail-api",
+                icon: <Globe className="w-4 h-4" />,
+                items: [
+                    { title: "API Authentication", href: "/developers/api-reference/retail-api#auth" },
+                    { title: "Mito Link SDKs", href: "/developers/api-reference/retail-api#sdks" },
+                ],
+            },
+            {
+                title: "Biller API (full)",
+                href: "/developers/api-reference/biller-api",
+                icon: <Store className="w-4 h-4" />,
+                items: [
+                    { title: "Biller Authentication", href: "/developers/api-reference/biller-api#auth" },
+                ],
+            },
+            {
+                title: "MTO API (full)",
+                href: "/developers/api-reference/mto-api",
+                icon: <Landmark className="w-4 h-4" />,
+                items: [
+                    { title: "Setup & Authorization", href: "/developers/api-reference/mto-api#setup" },
+                ],
+            },
         ],
     },
     {
@@ -160,6 +235,53 @@ function NavLink({ item, nested }: { item: NavItem; nested?: boolean }) {
     );
 }
 
+function NavGroupItem({ item, nestedLevel = 0, expandedItems, setExpandedItems }: {
+    item: NavItem;
+    nestedLevel?: number;
+    expandedItems: Record<string, boolean>;
+    setExpandedItems: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+}) {
+    const isExpanded = !!expandedItems[item.title];
+    const hasItems = item.items && item.items.length > 0;
+
+    return (
+        <div className="flex flex-col gap-1">
+            <div className="flex items-center justify-between gap-1 w-full">
+                <div className="flex-1 min-w-0">
+                    <NavLink item={item} nested={nestedLevel > 0} />
+                </div>
+                {hasItems && (
+                    <button
+                        onClick={() => {
+                            setExpandedItems(prev => ({
+                                ...prev,
+                                [item.title]: !prev[item.title]
+                            }));
+                        }}
+                        className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-primary transition-colors shrink-0"
+                        aria-label={isExpanded ? "Collapse" : "Expand"}
+                    >
+                        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", isExpanded ? "rotate-180" : "rotate-0")} />
+                    </button>
+                )}
+            </div>
+            {hasItems && isExpanded && (
+                <div className={cn("flex flex-col gap-1 border-l pl-4 animate-in fade-in slide-in-from-top-1 duration-200", nestedLevel === 0 ? "ml-6" : "ml-4")}>
+                    {item.items!.map((subItem, subIdx) => (
+                        <NavGroupItem
+                            key={subIdx}
+                            item={subItem}
+                            nestedLevel={nestedLevel + 1}
+                            expandedItems={expandedItems}
+                            setExpandedItems={setExpandedItems}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
 export function DocsSidebar() {
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
@@ -173,40 +295,14 @@ export function DocsSidebar() {
                                 {group.title}
                             </h4>
                             <div className="flex flex-col gap-1">
-                                {group.items.map((item, itemIdx) => {
-                                    const isExpanded = !!expandedItems[item.title];
-                                    const hasItems = item.items && item.items.length > 0;
-                                    return (
-                                        <div key={itemIdx} className="flex flex-col gap-1">
-                                            <div className="flex items-center justify-between gap-1 w-full">
-                                                <div className="flex-1 min-w-0">
-                                                    <NavLink item={item} />
-                                                </div>
-                                                {hasItems && (
-                                                    <button
-                                                        onClick={() => {
-                                                            setExpandedItems(prev => ({
-                                                                ...prev,
-                                                                [item.title]: !prev[item.title]
-                                                            }));
-                                                        }}
-                                                        className="p-1.5 hover:bg-muted rounded-md text-muted-foreground hover:text-primary transition-colors shrink-0"
-                                                        aria-label={isExpanded ? "Collapse" : "Expand"}
-                                                    >
-                                                        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", isExpanded ? "rotate-180" : "rotate-0")} />
-                                                    </button>
-                                                )}
-                                            </div>
-                                            {hasItems && isExpanded && (
-                                                <div className="flex flex-col gap-1 ml-6 border-l pl-4 animate-in fade-in slide-in-from-top-1 duration-200">
-                                                    {item.items!.map((subItem, subIdx) => (
-                                                        <NavLink key={subIdx} item={subItem} nested />
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                                {group.items.map((item, itemIdx) => (
+                                    <NavGroupItem
+                                        key={itemIdx}
+                                        item={item}
+                                        expandedItems={expandedItems}
+                                        setExpandedItems={setExpandedItems}
+                                    />
+                                ))}
                             </div>
                         </div>
                     ))}

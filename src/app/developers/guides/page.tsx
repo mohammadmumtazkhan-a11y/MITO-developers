@@ -46,7 +46,7 @@ export default function GuidesIndexPage() {
                 </p>
 
                 <section className="mb-12">
-                    <h2 className="text-2xl font-bold mb-6">Integration models</h2>
+                    <h2 id="models" className="text-2xl font-bold mb-6">Integration models</h2>
                     <div className="space-y-4">
                         {partnerFlows.map((partner) => (
                             <Link
@@ -69,7 +69,7 @@ export default function GuidesIndexPage() {
                 </section>
 
                 <section className="mb-12">
-                    <h2 className="text-2xl font-bold mb-6">Integration methods</h2>
+                    <h2 id="methods" className="text-2xl font-bold mb-6">Integration methods</h2>
                     <p className="text-sm text-muted-foreground mb-4">Shared across partner types — not tied to one model.</p>
                     <div className="grid sm:grid-cols-3 gap-4">
                         {integrationMethods.map((m) => (
@@ -82,7 +82,7 @@ export default function GuidesIndexPage() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold mb-6">Platform</h2>
+                    <h2 id="platform" className="text-2xl font-bold mb-6">Platform</h2>
                     <div className="grid sm:grid-cols-2 gap-4">
                         <Link href="/developers/webhooks" className="p-4 rounded-xl border hover:border-primary/40 group">
                             <p className="font-semibold group-hover:text-primary">Webhooks</p>

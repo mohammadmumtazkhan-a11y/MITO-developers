@@ -16,7 +16,7 @@ export default function SettlementPage() {
                 </p>
 
                 <section className="mb-12">
-                    <h2 className="text-2xl font-bold mb-4">Wallet model</h2>
+                    <h2 id="wallet-model" className="text-2xl font-bold mb-4">Wallet model</h2>
                     <p className="text-muted-foreground mb-6">
                         Affiliates and billers receive virtual wallets per currency (GBP, EUR, NGN, etc.). Collections credit the wallet; disbursements debit it.
                     </p>
@@ -32,7 +32,7 @@ export default function SettlementPage() {
                 </section>
 
                 <section className="mb-12 space-y-8">
-                    <h2 className="text-2xl font-bold">Settlement flow</h2>
+                    <h2 id="settlement-flow" className="text-2xl font-bold">Settlement flow</h2>
 
                     <div className="border-l-4 border-primary pl-6">
                         <h3 className="font-bold mb-1">1. Collect</h3>
@@ -60,7 +60,7 @@ export default function SettlementPage() {
                 </section>
 
                 <section className="mb-12">
-                    <h2 className="text-2xl font-bold mb-4">Reconciliation</h2>
+                    <h2 id="reconciliation" className="text-2xl font-bold mb-4">Reconciliation</h2>
                     <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                         <li>Match webhook events and transaction references to wallet movements.</li>
                         <li>Use balance and transaction list APIs for daily reconciliation.</li>
@@ -80,7 +80,7 @@ export default function SettlementPage() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold mb-4">Related integration flows</h2>
+                    <h2 id="related-flows" className="text-2xl font-bold mb-4">Related integration flows</h2>
                     <div className="grid sm:grid-cols-2 gap-4">
                         <Link href="/developers/guides/biller" className="p-4 rounded-xl border hover:border-primary/40 group">
                             <p className="font-semibold group-hover:text-primary">Biller</p>

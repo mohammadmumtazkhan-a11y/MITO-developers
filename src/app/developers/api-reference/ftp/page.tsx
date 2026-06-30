@@ -22,7 +22,7 @@ export default function FtpApiReferencePage() {
                 </div>
 
                 <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-4xl border-b">
-                    <h2 className="text-lg font-bold mb-3">General file rules</h2>
+                    <h2 id="rules" className="text-lg font-bold mb-3">General file rules</h2>
                     <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
                         <li>Strict <strong>.csv</strong> format, pipe-delimited (<code>|</code>)</li>
                         <li>No header row</li>

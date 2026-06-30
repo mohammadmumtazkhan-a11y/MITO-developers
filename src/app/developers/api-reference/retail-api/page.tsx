@@ -31,7 +31,7 @@ export default function RetailApiReference() {
 
                 {/* Authentication Info */}
                 <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-b space-y-6">
-                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                    <h2 id="auth" className="text-2xl font-bold flex items-center gap-2">
                         <Key className="w-6 h-6 text-primary" /> API Authentication
                     </h2>
                     <p className="text-muted-foreground">
@@ -791,7 +791,7 @@ export default function RetailApiReference() {
 
                 {/* Frontend SDK */}
                 <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl border-t space-y-6">
-                    <h2 className="text-3xl font-extrabold tracking-tight flex items-center gap-2">
+                    <h2 id="sdks" className="text-3xl font-extrabold tracking-tight flex items-center gap-2">
                         <Zap className="w-8 h-8 text-yellow-500" /> Mito Link SDKs
                     </h2>
                     <p className="text-lg text-muted-foreground">

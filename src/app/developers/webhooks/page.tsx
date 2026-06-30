@@ -88,7 +88,7 @@ export default function WebhooksPage() {
                 </p>
 
                 <section className="mb-12">
-                    <h2 className="text-2xl font-bold mb-4">Core behaviour</h2>
+                    <h2 id="core-behaviour" className="text-2xl font-bold mb-4">Core behaviour</h2>
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="border rounded-xl p-5">
                             <h3 className="font-semibold mb-2">Delivery & retries</h3>
@@ -106,7 +106,7 @@ export default function WebhooksPage() {
                 </section>
 
                 <section className="mb-12 scroll-mt-24" id="security">
-                    <h2 className="text-2xl font-bold mb-4">Signature verification</h2>
+                    <h2 id="signature-verification" className="text-2xl font-bold mb-4">Signature verification</h2>
                     <p className="text-muted-foreground mb-4">
                         Verify the HMAC in the <code className="bg-muted px-1 rounded font-mono">X-Mito-Signature</code> header using your webhook secret.
                     </p>
@@ -119,7 +119,7 @@ export default function WebhooksPage() {
                 </section>
 
                 <section className="mb-12 scroll-mt-24" id="events">
-                    <h2 className="text-2xl font-bold mb-6">Events by phase</h2>
+                    <h2 id="events-by-phase" className="text-2xl font-bold mb-6">Events by phase</h2>
                     {eventGroups.map((group) => (
                         <div key={group.phase} className="mb-10">
                             <h3 className="text-lg font-bold mb-4 text-foreground/90 border-b pb-2">{group.phase}</h3>

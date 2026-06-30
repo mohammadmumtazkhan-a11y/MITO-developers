@@ -63,7 +63,7 @@ export default function DevelopersLandingPage() {
                 {/* Transaction model */}
                 <section>
                     <div className="mb-10 text-center">
-                        <h2 className="text-3xl font-bold tracking-tight mb-4">Every transfer has three phases</h2>
+                        <h2 id="transfer-phases" className="text-3xl font-bold tracking-tight mb-4">Every transfer has three phases</h2>
                         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
                             Collect funds, process and convert, then disburse — documented by flow in Documentation and by capability in API Reference.
                         </p>
@@ -104,7 +104,7 @@ export default function DevelopersLandingPage() {
                 <section className="bg-muted/20 rounded-3xl p-8 md:p-12 border">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <h2 className="text-3xl font-bold tracking-tight mb-6">Choose your integration model</h2>
+                            <h2 id="choose-model" className="text-3xl font-bold tracking-tight mb-6">Choose your integration model</h2>
                             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
                                 Pick the partner path that matches your business — each guide walks through Collect → Process / Forex → Disburse for your integration method.
                             </p>
@@ -158,7 +158,7 @@ export default function DevelopersLandingPage() {
 
                 {/* CTA Section */}
                 <section className="text-center bg-primary text-primary-foreground rounded-2xl p-12 shadow-lg">
-                    <h2 className="text-3xl font-bold mb-4">Ready to test in Sandbox?</h2>
+                    <h2 id="ready-to-test" className="text-3xl font-bold mb-4">Ready to test in Sandbox?</h2>
                     <p className="max-w-2xl mx-auto text-primary-foreground/80 mb-8 text-lg">
                         Create a partner account, grab your test API keys, and start building with MITO in minutes.
                     </p>
