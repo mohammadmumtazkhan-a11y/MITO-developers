@@ -76,6 +76,15 @@ const docsConfig: NavGroup[] = [
                 title: "Retail affiliate",
                 href: "/developers/guides/retail",
                 icon: <Globe className="w-4 h-4" />,
+                items: [
+                    { title: "Integration methods", href: "/developers/guides/retail#integration-methods" },
+                    { title: "Prerequisites", href: "/developers/guides/retail#prerequisites" },
+                    { title: "Architecture", href: "/developers/guides/retail#architecture" },
+                    { title: "Integration flow", href: "/developers/guides/retail#integration-flow" },
+                    { title: "Webhooks", href: "/developers/guides/retail#webhooks" },
+                    { title: "Status lifecycle", href: "/developers/guides/retail#status-lifecycle" },
+                    { title: "APIs involved", href: "/developers/guides/retail#apis-involved" },
+                ],
             },
             {
                 title: "Biller",

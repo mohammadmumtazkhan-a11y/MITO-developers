@@ -99,7 +99,7 @@ export function IntegrationGuide({ content }: { content: IntegrationGuideContent
             <p className="text-xl text-muted-foreground mb-8">{content.description}</p>
 
             {/* Integration methods */}
-            <section className="mb-12">
+            <section id="integration-methods" className="mb-12">
                 <h2 className="text-2xl font-bold mb-4">Integration methods</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                     {content.integrationMethods.map((m) => (
@@ -116,7 +116,7 @@ export function IntegrationGuide({ content }: { content: IntegrationGuideContent
             </section>
 
             {/* Prerequisites */}
-            <section className="mb-12">
+            <section id="prerequisites" className="mb-12">
                 <h2 className="text-2xl font-bold mb-4">Prerequisites</h2>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                     {content.prerequisites.map((item, i) => (
@@ -127,14 +127,14 @@ export function IntegrationGuide({ content }: { content: IntegrationGuideContent
 
             {/* Architecture */}
             {content.diagram && content.diagramTitle && (
-                <section className="mb-12">
+                <section id="architecture" className="mb-12">
                     <h2 className="text-2xl font-bold mb-6">Architecture</h2>
                     <FlowDiagram title={content.diagramTitle}>{content.diagram}</FlowDiagram>
                 </section>
             )}
 
             {/* Three phases */}
-            <section className="mb-12 space-y-10">
+            <section id="integration-flow" className="mb-12 space-y-10">
                 <h2 className="text-2xl font-bold">Integration flow</h2>
 
                 <div>
@@ -173,7 +173,7 @@ export function IntegrationGuide({ content }: { content: IntegrationGuideContent
 
             {/* Webhooks */}
             {content.webhookEvents && content.webhookEvents.length > 0 && (
-                <section className="mb-12">
+                <section id="webhooks" className="mb-12">
                     <h2 className="text-2xl font-bold mb-4">Webhooks</h2>
                     <p className="text-muted-foreground text-sm mb-4">
                         Confirm final status server-side via webhook before releasing goods or marking a transfer complete.{" "}
@@ -198,7 +198,7 @@ export function IntegrationGuide({ content }: { content: IntegrationGuideContent
 
             {/* Status lifecycle */}
             {content.statusFlow && content.statusFlow.length > 0 && (
-                <section className="mb-12">
+                <section id="status-lifecycle" className="mb-12">
                     <h2 className="text-2xl font-bold mb-4">Status lifecycle</h2>
                     <div className="flex flex-wrap items-center gap-2 text-sm font-mono">
                         {content.statusFlow.map((status, i) => (
@@ -214,7 +214,7 @@ export function IntegrationGuide({ content }: { content: IntegrationGuideContent
             )}
 
             {/* APIs involved */}
-            <section className="mb-12">
+            <section id="apis-involved" className="mb-12">
                 <h2 className="text-2xl font-bold mb-2">APIs involved</h2>
                 <p className="text-sm text-muted-foreground mb-4">
                     Full request/response specs live in{" "}
