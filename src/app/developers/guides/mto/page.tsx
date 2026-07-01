@@ -20,7 +20,7 @@ export default function MtoGuidePage() {
                         "Activated corridors and payout bank account.",
                     ],
                     integrationMethods: [
-                        { label: "REST API", href: "/developers/guides/mto", description: "Real-time transaction submission." },
+                        { label: "REST API", href: "/developers/api-reference/mto-api", description: "Real-time transaction submission." },
                         { label: "FTP batch", href: "/developers/file-integration/mto-ftp", description: "Bulk pipe-delimited CSV over SFTP." },
                     ],
                     diagramTitle: "MTO remittance flow",
