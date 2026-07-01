@@ -20,7 +20,7 @@ export default function BillerAffiliateGuidePage() {
                         "Webhook endpoint configured to receive payment confirmations.",
                     ],
                     integrationMethods: [
-                        { label: "REST API", href: "/developers/guides/biller", description: "Server-side collection initiation." },
+                        { label: "REST API", href: "/developers/api-reference/biller-api", description: "Server-side collection initiation." },
                         { label: "Hosted checkout", href: "/developers/hosted-flows", description: "Redirect customers to MITO payment pages." },
                         { label: "SDK", href: "/developers/guides/sdk", description: "Embedded modal checkout on your site." },
                     ],
