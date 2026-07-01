@@ -20,7 +20,7 @@ export default function RetailAffiliateGuidePage() {
                         "Webhook endpoint for async transaction updates.",
                     ],
                     integrationMethods: [
-                        { label: "REST API", href: "/developers/guides/retail", description: "Full custom UI with MITO backend rails." },
+                        { label: "REST API", href: "/developers/api-reference/retail-api", description: "Full custom UI with MITO backend rails." },
                         { label: "Hosted checkout", href: "/developers/hosted-flows", description: "Redirect to MITO payment and KYC pages." },
                         { label: "SDK & widget", href: "/developers/guides/sdk", description: "Embedded checkout without full redirect." },
                     ],
